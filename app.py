@@ -7,6 +7,11 @@ import pandas as pd
 from BBobgi import BBobgi
 from io import StringIO
 
+st.set_page_config(
+    page_title='문서 업로드',
+    page_icon='📂'
+)
+
 bbobgi = BBobgi()
 
 def df_col_list(file_, df):
@@ -47,6 +52,7 @@ def extract_name_list(files):
 
 st.set_page_config('자동 명함뽑기', page_icon='💵')
 
+st.sidebar.title('방식 설정')
 
 col1, col2 = st.columns(2, gap='medium')
 with col1:
@@ -83,19 +89,3 @@ with col2:
         manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
         choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
         st.write(', '.join(choose_n))
-
-
-
-
-
-
-
-
-# file_ = st.file_uploader('이름들이 들어있는 명함통 파일을 넣어주세요!')
-# col_name = st.text_input('대상이 될 이름이 들어있는 컬럼명을 입력해주세요!')
-# if file_ is not None:
-#     df = pd.read_csv(file_)
-
-# if
-# count_manjokdo_complete_per_student(target_list)
-# 
