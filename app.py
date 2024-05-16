@@ -67,7 +67,7 @@ try:
     n = int(n_input)
 except ValueError:
     st.error("Please enter a valid number for the count of names to draw.")
-    n = 1
+    n = 0
 
 files = upload_files(accept_multiple_files=True, sidebar=False)
 in_button = st.button('명함통 확정!')
