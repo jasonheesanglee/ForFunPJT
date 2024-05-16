@@ -49,8 +49,7 @@ def extract_name_list(files):
             #     text = f.read()
             #     f.close()
             # file_ = StringIO(file_.getvalue().decode('utf-8'))
-            st.write(file_.read().decode('utf-8'))
-            list_of_names.extend(bbobgi.extract_name_list(file_))
+            list_of_names.extend(bbobgi.extract_name_list(file_.read().decode('utf-8')))
     return list_of_names
 
 st.set_page_config('자동 명함뽑기', page_icon='💵')
