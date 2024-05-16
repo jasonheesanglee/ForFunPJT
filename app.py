@@ -48,7 +48,7 @@ def extract_name_list(files):
 st.set_page_config('자동 명함뽑기', page_icon='💵')
 
 
-col1, col2 = st.columns(2, gap='small')
+col1, col2 = st.columns(2, gap='medium')
 with col1:
     st.header('환경설정')
     files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
