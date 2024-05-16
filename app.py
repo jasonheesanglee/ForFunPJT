@@ -50,28 +50,35 @@ col1, col2 = st.columns(2)
 with col1:
     st.header('문서 업로드')
     st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
-
+    st.write(' ')
+    st.write('이 부분은 필수가 아닙니다.',)
     files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
-    out_button = st.button('내부인원 확정!')
+    if files:
+        st.success('업로드 성공!')
+    else:
+        st.warning('업로드 실패!')
     compare_list = extract_name_list(files)
-    st.write()
-    st.write()
-    st.write()
+    st.write('')
+    st.write('')
+    st.write('')
     st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
+    
+
+    files = upload_files(accept_multiple_files=True, sidebar=False)
+    target_list = extract_name_list(files)
+
+with col2:
+    st.header('명함을 뽑아볼까요?')
+    st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
+
     n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
+    in_button = st.button('명함 뽑기!')
     try:
         n = int(n_input)
     except ValueError:
         st.error("Please enter a valid number for the count of names to draw.")
         n = 0
-
-    files = upload_files(accept_multiple_files=True, sidebar=False)
-    in_button = st.button('명함통 확정!')
-    target_list = extract_name_list(files)
-
-with col2:
-    
-    if n!= '' and out_button and in_button:
+    if n!= '' and in_button:
         manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
         choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
         st.write(', '.join(choose_n))
