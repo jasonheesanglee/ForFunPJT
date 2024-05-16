@@ -5,6 +5,8 @@ import time
 from datetime import datetime
 import pandas as pd
 from BBobgi import BBobgi
+from io import StringIO
+
 bbobgi = BBobgi()
 
 def df_col_list(file_, df):
@@ -46,8 +48,8 @@ def extract_name_list(files):
             # with open(file_, 'r', encoding='utf-8') as f:
             #     text = f.read()
             #     f.close()
-
-            list_of_names.extend(bbobgi.extract_name_list(file_.read()))
+            file_ = StringIO(file_.getvalue().decode('utf-8'))
+            list_of_names.extend(bbobgi.extract_name_list(file_))
     return list_of_names
 
 st.set_page_config('자동 명함뽑기', page_icon='💵')
