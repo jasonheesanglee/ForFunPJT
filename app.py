@@ -49,6 +49,7 @@ def extract_name_list(files):
             #     text = f.read()
             #     f.close()
             file_ = StringIO(file_.getvalue().decode('utf-8'))
+            st.write(file_)
             list_of_names.extend(bbobgi.extract_name_list(file_))
     return list_of_names
 
