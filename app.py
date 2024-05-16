@@ -22,14 +22,11 @@ def upload_files(accept_multiple_files=False, sidebar=None, add_string=''):
             f'{add_string}파일을 선택해 주세요.',
             accept_multiple_files=accept_multiple_files
         )
-        st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
     else:
         files = st.file_uploader(
             f'{add_string}파일을 선택해 주세요.',
             accept_multiple_files=accept_multiple_files
         )
-        st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
-
     return files
 
 def extract_name_list(files):
@@ -45,11 +42,6 @@ def extract_name_list(files):
             list_of_names.extend(list_of_col)
 
         if file_.name.endswith('.txt'):
-            # file_ = st.text(file_)
-            # with open(file_, 'r', encoding='utf-8') as f:
-            #     text = f.read()
-            #     f.close()
-            # file_ = StringIO(file_.getvalue().decode('utf-8'))
             list_of_names.extend(bbobgi.extract_name_list(file_.read().decode('utf-8')))
     return list_of_names
 
@@ -61,7 +53,7 @@ with col1:
     st.header('환경설정')
     files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
     out_button = st.button('내부인원 확정!')
-    # col1, col2 = st.columns(2)
+    st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
     compare_list = extract_name_list(files)
 
 with col2:
@@ -76,6 +68,8 @@ with col2:
 
     files = upload_files(accept_multiple_files=True, sidebar=False)
     in_button = st.button('명함통 확정!')
+    st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
+
     target_list = extract_name_list(files)
 
 
