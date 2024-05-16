@@ -42,10 +42,12 @@ def extract_name_list(files):
             list_of_names.extend(list_of_col)
 
         if file_.name.endswith('.txt'):
-            with open(file_, 'r') as f:
-                text = f.read()
-                f.close()
-            list_of_names.extend(bbobgi.extract_name_list(text))
+            # file_ = st.text(file_)
+            # with open(file_, 'r', encoding='utf-8') as f:
+            #     text = f.read()
+            #     f.close()
+
+            list_of_names.extend(bbobgi.extract_name_list(file_.read()))
     return list_of_names
 
 st.set_page_config('자동 명함뽑기', page_icon='💵')
