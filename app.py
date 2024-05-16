@@ -70,12 +70,12 @@ target_list = extract_name_list(files)
 # with col1:
 if out_button and in_button:
     manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
-    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=int(n))
     st.write(', '.join(choose_n))
 
 elif in_button:
     manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
-    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=int(n))
     st.write(', '.join(choose_n))
 
 
