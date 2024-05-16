@@ -64,8 +64,12 @@ with col1:
     st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     
 
-    files = upload_files(accept_multiple_files=True, sidebar=False)
-    target_list = extract_name_list(files)
+    files_ = upload_files(accept_multiple_files=True, sidebar=False)
+    if files_:
+        st.success('업로드 성공!')
+    else:
+        st.warning('업로드 실패!')
+    target_list = extract_name_list(files_)
 
 with col2:
     st.header('명함을 뽑아볼까요?')
