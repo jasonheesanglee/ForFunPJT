@@ -46,10 +46,6 @@ class BBobgi:
                 manjokdo_dict[name] += 1
         return manjokdo_dict
 
-    def shuffle_list(self, BBobgi_tong:list):
-        
-        return shuffled
-
     def choose_n_students(self, manjokdo_dict, n):
         BBobgi_tong = []
         
@@ -63,7 +59,7 @@ class BBobgi:
         count = 0
         while count != n:
             final = random.choice(BBobgi_tong)
-            if final in final_lists:
+            if final_lists!=[] and final in final_lists:
                 continue
             else:
                 final_lists.append(final)
