@@ -54,7 +54,7 @@ class BBobgi:
         BBobgi_tong = []
 
         for key, value in manjokdo_dict:
-            for i in range(value-1):
+            for i in range(value):
                 BBobgi_tong.append(key)
         
         shuffled = self.shuffle(BBobgi_tong)
