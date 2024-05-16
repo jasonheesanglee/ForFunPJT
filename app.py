@@ -19,16 +19,17 @@ def df_col_list(file_, df):
 def upload_files(accept_multiple_files=False, sidebar=None, add_string=''):
     if sidebar:
         files = st.sidebar.file_uploader(
-            f'{add_string}파일을 선택해 주세요.\n\
-            현재 CSV, XLSX, TXT 파일만 지원합니다.',
+            f'{add_string}파일을 선택해 주세요.',
             accept_multiple_files=accept_multiple_files
         )
+        st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
     else:
         files = st.file_uploader(
-            f'{add_string}파일을 선택해 주세요.\n\
-            현재 CSV, XLSX, TXT 파일만 지원합니다.',
+            f'{add_string}파일을 선택해 주세요.',
             accept_multiple_files=accept_multiple_files
         )
+        st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
+
     return files
 
 def extract_name_list(files):
@@ -57,15 +58,15 @@ st.set_page_config('자동 명함뽑기', page_icon='💵')
 
 col1, col2 = st.columns(2)
 with col1:
-    st.title('환경설정')
+    st.header('환경설정')
     files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
     out_button = st.button('내부인원 확정!')
     # col1, col2 = st.columns(2)
     compare_list = extract_name_list(files)
 
 with col2:
-    st.title('명함뽑기')
-    st.header('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
+    st.header('명함뽑기')
+    st.subheader('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
     try:
         n = int(n_input)
