@@ -17,12 +17,14 @@ def df_col_list(file_, df):
 def upload_files(accept_multiple_files=False, sidebar=None, add_string=''):
     if sidebar:
         files = st.sidebar.file_uploader(
-            f'{add_string}파일을 선택해 주세요.\n현재 CSV, XLSX, TXT 파일만 지원합니다.',
+            f'{add_string}파일을 선택해 주세요.
+            현재 CSV, XLSX, TXT 파일만 지원합니다.',
             accept_multiple_files=accept_multiple_files
         )
     else:
         files = st.file_uploader(
-            f'{add_string}파일을 선택해 주세요.\n현재 CSV, XLSX, TXT 파일만 지원합니다.',
+            f'{add_string}파일을 선택해 주세요.
+            현재 CSV, XLSX, TXT 파일만 지원합니다.',
             accept_multiple_files=accept_multiple_files
         )
     return files
