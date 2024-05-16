@@ -53,12 +53,12 @@ st.header('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
 
 st.sidebar.title('환경설정')
 files = upload_files(accept_multiple_files=True, sidebar=True, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
-out_button = st.sidebar.button('Submit')
+out_button = st.sidebar.button('내부인원 확정!')
 # col1, col2 = st.columns(2)
 compare_list = extract_name_list(files)
 n = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder=1)    
 files = upload_files(accept_multiple_files=True, sidebar=False)
-in_button = st.button('Submit')
+in_button = st.button('명함통 확정!')
 target_list = extract_name_list(files)
 
 # with col1:
