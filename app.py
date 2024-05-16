@@ -83,7 +83,7 @@ with col2:
         st.error("Please enter a valid number for the count of names to draw.")
         n = 0
 
-    cont = st.container(height='300', border=True)
+    cont = st.container(height=300, border=True)
     if n!= '' and in_button:
         manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
         choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
