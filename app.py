@@ -67,7 +67,7 @@ files = upload_files(accept_multiple_files=True, sidebar=False)
 in_button = st.button('명함통 확정!')
 target_list = extract_name_list(files)
 
-
+print(type(n))
 # with col1:
 if n!='' and out_button and in_button:
     manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
