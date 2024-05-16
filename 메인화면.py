@@ -8,4 +8,4 @@ st.set_page_config(
 )
 st.title('자동 명함뽑기')
 st.sidebar.success('명함뽑을 방식을 골라주세요!')
-st.image('picknamecard.png')
+st.image('./picknamecard.png')
