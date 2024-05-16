@@ -1,16 +1,10 @@
-import pytz
-from PIL import Image
 import streamlit as st
-import time
-from datetime import datetime
-import pandas as pd
-from BBobgi import BBobgi
-from io import StringIO
-
 st.set_page_config(
     page_title='문서 업로드',
     page_icon='📂'
 )
+import pandas as pd
+from BBobgi import BBobgi
 
 bbobgi = BBobgi()
 
