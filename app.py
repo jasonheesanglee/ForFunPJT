@@ -1,8 +1,6 @@
 import streamlit as st
-st.set_page_config(
-    page_title='문서 업로드',
-    page_icon='📂'
-)
+st.set_page_config('자동 명함뽑기', page_icon='💵')
+
 import pandas as pd
 from BBobgi import BBobgi
 
@@ -44,7 +42,7 @@ def extract_name_list(files):
             list_of_names.extend(bbobgi.extract_name_list(file_.read().decode('utf-8')))
     return list_of_names
 
-st.set_page_config('자동 명함뽑기', page_icon='💵')
+
 
 st.sidebar.title('방식 설정')
 
