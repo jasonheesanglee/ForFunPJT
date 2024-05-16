@@ -58,7 +58,7 @@ st.set_page_config('자동 명함뽑기', page_icon='💵')
 col1, col2 = st.columns(2)
 with col1:
     st.title('환경설정')
-    files = upload_files(accept_multiple_files=True, sidebar=True, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
+    files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
     out_button = st.button('내부인원 확정!')
     # col1, col2 = st.columns(2)
     compare_list = extract_name_list(files)
