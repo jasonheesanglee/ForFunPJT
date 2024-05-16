@@ -46,16 +46,13 @@ def extract_name_list(files):
 
 st.sidebar.title('방식 설정')
 
-col1, col2 = st.columns(2, gap='medium')
+col1, col2 = st.columns(2)
 with col1:
-    st.header('환경설정')
+    st.header('문서 업로드')
     files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
     out_button = st.button('내부인원 확정!')
-    st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
     compare_list = extract_name_list(files)
 
-with col2:
-    st.header('명함뽑기')
     st.subheader('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
     try:
@@ -68,9 +65,8 @@ with col2:
     in_button = st.button('명함통 확정!')
     st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
 
+with col2:
     target_list = extract_name_list(files)
-
-
     # with col1:
     if n!='' and out_button and in_button:
         manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
