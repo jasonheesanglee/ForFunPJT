@@ -23,21 +23,6 @@ class BBobgi:
 
         return list_of_names
 
-    def extract_target_list(self, str_of_target_names:str) -> list:
-        str_of_target_names = str_of_target_names.replace('\n', ' ')
-        str_of_target_names = str_of_target_names.replace('\t', ' ')
-        str_of_target_names = str_of_target_names.replace(',', ' ')
-
-        entire_list_of_target_names = []
-
-        track = str_of_target_names.split()
-        for name in track:
-            name = re.sub(self.pattern, '', name)
-            if name == '':
-                continue
-            entire_list_of_target_names.append(name)
-
-        return entire_list_of_target_names
 
     def count_manjokdo_complete_per_student(self, target_list:list, entire_list_of_candidates:list=None):
         '''
