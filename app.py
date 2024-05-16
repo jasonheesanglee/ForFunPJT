@@ -53,7 +53,7 @@ with col1:
     out_button = st.button('내부인원 확정!')
     compare_list = extract_name_list(files)
 
-    st.subheader('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
+    st.write('\n\n\n\n이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
     try:
         n = int(n_input)
@@ -64,16 +64,16 @@ with col1:
     files = upload_files(accept_multiple_files=True, sidebar=False)
     in_button = st.button('명함통 확정!')
     st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
+    target_list = extract_name_list(files)
 
 with col2:
-    target_list = extract_name_list(files)
-    # with col1:
-    if n!='' and out_button and in_button:
+    
+    if n!= '' and out_button and in_button:
         manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
         choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
         st.write(', '.join(choose_n))
 
-    elif n!='' and in_button:
+    elif n!= '' and in_button:
         manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
         choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
         st.write(', '.join(choose_n))
