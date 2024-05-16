@@ -52,11 +52,11 @@ class BBobgi:
         for key, value in manjokdo_dict.items():
             for i in range(value):
                 BBobgi_tong.append(key)
-        print(BBobgi_tong)
 
         random.shuffle(BBobgi_tong)
         final_lists = []
         count = 0
+        
         while count != n:
             final = random.choice(BBobgi_tong)
             if final_lists!=[] and final in final_lists:
