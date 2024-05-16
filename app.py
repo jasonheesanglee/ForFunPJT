@@ -62,12 +62,19 @@ files = upload_files(accept_multiple_files=True, sidebar=True, add_string='외�
 out_button = st.sidebar.button('내부인원 확정!')
 # col1, col2 = st.columns(2)
 compare_list = extract_name_list(files)
-n = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder=1)
+n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
+try:
+    n = int(n_input)
+except ValueError:
+    st.error("Please enter a valid number for the count of names to draw.")
+    n = 1
+
 files = upload_files(accept_multiple_files=True, sidebar=False)
 in_button = st.button('명함통 확정!')
 target_list = extract_name_list(files)
 
-print(type(n))
+
+
 # with col1:
 if n!='' and out_button and in_button:
     manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
