@@ -35,8 +35,13 @@ class BBobgi:
         return list_of_names
 
     def encode_img(self, image_path):
-        with open(image_path, 'rb') as image_file:
-            return base64.b64encode(image_file.read()).decode('utf-8')
+        if isinstance(image_path, st.UploadedFile):
+            image_content = image_path.read()
+            return base64.b64encode(image_content).decode('utf-8')
+        
+        else:
+            with open(image_path, 'rb') as image_file:
+                return base64.b64encode(image_file.read()).decode('utf-8')
 
     def image_extract_time(self, image_path):
         image = self.encode_img(image_path)
