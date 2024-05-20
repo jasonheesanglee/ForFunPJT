@@ -11,7 +11,10 @@ def df_col_list(file_, df):
         f'{file_.name.split(".")[0]} 문서 내 대상이 될 컬럼명을 적어주세요!',
         placeholder='컬럼명'
     )
-    return list(df[col_name])
+    if col_name:
+        return list(df[col_name])
+    else: 
+        return list()
 
 def upload_files(accept_multiple_files=False, sidebar=None, add_string=''):
     if sidebar:
