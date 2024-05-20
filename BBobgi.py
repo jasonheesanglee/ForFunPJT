@@ -12,7 +12,7 @@ try:
         conf = json.load(f)
         openai = OpenAI(api_key=conf['OPENAI_API'])
 except:
-    openai = OpenAI(api_key=st.secrets.get('OPENAI_API'))
+    openai = OpenAI(api_key=st.secrets['OPENAI_API'])
 
 class BBobgi:
     def __init__(self):
