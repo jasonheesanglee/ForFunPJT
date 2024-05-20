@@ -18,7 +18,7 @@ target_list = None
 st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
 current_path = os.getcwd()
-st.sidebar.write(os.listdir('./streamlit/'))
+st.sidebar.write(os.listdir('./.streamlit/'))
 
 openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', type='password', disabled=False)
 api_switch = False
