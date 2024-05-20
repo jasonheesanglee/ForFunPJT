@@ -55,6 +55,14 @@ def df_col_list(file_, df):
 #     if type_util.is_pillow_image(obj=image_path)
 
 
+def save_image(image:PIL.Image, date:str, numb:int, title:str):
+    if 'image_storage' not in st.session_state:
+        st.session_state['image_storage'] = []
+    temp_name = f'{date}_{numb}_{title}.png'
+    image.save(temp_name)
+    st.session_state['image_storage'].append(temp_name)
+
+
 def upload_files(accept_multiple_files:bool=False, sidebar:bool=False, add_string:str='', type=None):
     if sidebar:
         if type:
@@ -144,12 +152,10 @@ with col1:
 
     files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ', type=['jpg', 'png', 'jpeg'])
     if files_:
-        for file_ in files_:
+        for idx, file_ in enumerate(files_):
             file_name = file_.name
             extension = file_name.split('.')[-1]
             title = file_name.split('.')[0]
-            content = PIL.Image.open(file_)
-            st.image(content)
             
             if extension.lower() not in ['png', 'jpg', 'jpeg']:
                 switch_2=False
@@ -168,7 +174,10 @@ with col1:
 
                 finally:
                     if openai_api_key:
-                        user_name, extracted_time = bbobgi.image_extract_time(content)
+                        content = PIL.Image.open(file_)
+                        save_image(title=file_name, date=initial_time.split('_')[0], image=content, numb=idx)
+                        img_path = st.session_state['image_storage'][-1]
+                        user_name, extracted_time = bbobgi.image_extract_time(img_path)
                         if extracted_time == None:
                             st.write(f'{file_}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
                         elif extracted_time.split('_')[0] != title.split('_')[-1]:
