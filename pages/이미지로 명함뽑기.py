@@ -3,7 +3,6 @@ from datetime import datetime
 import pandas as pd
 import streamlit as st
 from BBobgi import BBobgi
-bbobgi = BBobgi()
 
 st.set_page_config(
     page_title='자동 명함뽑기',
@@ -13,6 +12,8 @@ st.set_page_config(
 
 st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
+openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.')
+bbobgi = BBobgi(openai_api_key)
 
 def get_all_images(list_names:list, list_images:list):
     name_time = {}
@@ -114,20 +115,23 @@ with col1:
                 st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
 
             else:
-                user_name, extracted_time = bbobgi.image_extract_time(file_)
-                if extracted_time.split('_')[0] != title.split('_')[-1]:
-                    st.write(f'{file_}은 날짜가 다릅니다. 유효하지 않습니다.')
-                elif int(extracted_time.split('_')[-1]) < int(initial_time):
-                    st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
+                if openai_api_key:
+                    user_name, extracted_time = bbobgi.image_extract_time(file_, openai_api_key)
+                    if extracted_time.split('_')[0] != title.split('_')[-1]:
+                        st.write(f'{file_}은 날짜가 다릅니다. 유효하지 않습니다.')
+                    elif int(extracted_time.split('_')[-1]) < int(initial_time):
+                        st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
+                    else:
+                        if st.session_state['names']:
+                            sss = True
+                            if extracted_time.split('_')[0] in st.session_state['names']:
+                                st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
+                            else: # extracted_time.split('_')[0] not in st.session_state['names']:
+                                st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
+                            # else:
+                                # st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
                 else:
-                    if st.session_state['names']:
-                        sss = True
-                        if extracted_time.split('_')[0] in st.session_state['names']:
-                            st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
-                        else: # extracted_time.split('_')[0] not in st.session_state['names']:
-                            st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
-                        # else:
-                            # st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
+                    st.error('좌측에서 OpenAI API Key를 입력해주세요.')
 
         if switch_2 == False:
             st.error('업로드 실패!')

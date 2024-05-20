@@ -9,17 +9,15 @@ import streamlit as st
 
 try:
     api_key = st.secrets['OPENAI_API']
-    openai = OpenAI(api_key=api_key)
-
 except:
     with open('config.json', 'r') as f:
         conf = json.load(f)
-        openai = OpenAI(api_key=conf['OPENAI_API'])
-    
+        api_key=conf['OPENAI_API']    
 
 class BBobgi:
-    def __init__(self):
+    def __init__(self, openai_api_key):
         self.pattern = '[^ㄱ-ㅎ가-힇a-zA-Z]'
+        self.openai = OpenAI(api_key=openai_api_key)
 
     def extract_name_list(self, str_of_names:str) -> list:
         list_of_names = []
@@ -44,7 +42,7 @@ class BBobgi:
         image = self.encode_img(image_path)
         user_name = image_path.split('.')[0].split('/')[-1].split('_')[0]
 
-        response = openai.chat.completions.create(
+        response = self.openai.chat.completions.create(
             model='gpt-4o',
             messages=[
                 {'role':'system', 'content':'You are an expert in detecting date and time in any number formats and languages. \
