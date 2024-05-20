@@ -813,3 +813,4 @@ Temporary Items
 .idea/
 api_key.json
 *.ipynb
+config.json

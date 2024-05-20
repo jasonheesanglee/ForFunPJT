@@ -1,8 +1,18 @@
 import re
+import json
+import base64
 import random
+from openai import OpenAI
 import pandas as pd # type: ignore
 from collections import defaultdict
+import streamlit as st
 
+try:
+    with open('config.json', r) as f:
+        conf = json.load(f)
+        openai = OpenAI(api_key=conf['OpenAI_API'])
+except:
+    openai = OpenAI(api_key=st.secrets['OpenAI_API'])
 
 class BBobgi:
     def __init__(self):
@@ -22,6 +32,40 @@ class BBobgi:
             list_of_names.append(name)
 
         return list_of_names
+
+    def encode_img(self, image_path):
+        with open(image_path, 'rb') as image_file:
+            return base64.b64encode(image_file.read()).decode('utf-8')
+
+    def image_extract_time(self, image_path):
+        image = self.encode_img(image_path)
+        user_name = image_path.split('.')[0].split('/')[-1].split('_')[0]
+
+        response = openai.chat.completions.create(
+            model='gpt-4o',
+            messages=[
+                {'role':'system', 'content':'You are an expert in detecting date and time in any number formats and languages. \
+                 You will be helping the user to detect date and time from the given image. \
+                 You need to return the output in {%m%d_%H%M} format'},
+                {
+                'role': 'user',
+                'content':[
+                    {'type': 'text',
+                    'text':
+                    '''Please detect date and time from this image.
+                    Image is a screenshot of the final page of the google forms.
+                    The date can be in any format, any language, but what we need is a month, date and time.
+                    '''},
+                    {'type':'image_url',
+                    "image_url": {'url': f'data:image/png;base64,{image}'},
+                    },
+                ],
+                },
+            ],
+            temperature=0.0,
+        )
+        return user_name, response.choices[0].message.content
+
 
 
     def count_manjokdo_complete_per_student(self, target_list:list, entire_list_of_candidates:list=None):
@@ -56,7 +100,7 @@ class BBobgi:
         random.shuffle(BBobgi_tong)
         final_lists = []
         count = 0
-        
+
         while count != n:
             final = random.choice(BBobgi_tong)
             if final_lists!=[] and final in final_lists:
@@ -66,5 +110,5 @@ class BBobgi:
                 count += 1
         return final_lists
 
-
+    
 
