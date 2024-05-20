@@ -123,10 +123,10 @@ with col1:
     if files_:
         for file_ in files_:
             file_name = file_.name
-            st.write(file_name)
+            # st.write(file_name)
             extension = file_name.split('.')[-1]
             # st.write(extension)
-            title = file_name.split('.')[0].split('/')[-1]
+            title = file_name.split('.')[0]
             
             if extension.lower() not in ['png', 'jpg', 'jpeg']:
                 switch_2=False
@@ -138,7 +138,7 @@ with col1:
 
             else:
                 try:
-                    datetime.strptime("_".join(title.split('_')[1:]), '%m%d')
+                    datetime.strptime("_".join(title.split('_')[1]), '%m%d')
                 except ValueError:
                     st.error('파일명은 "성함_**월일**" 양식과 동일해야 합니다. ex) 홍길동_0520')
 
