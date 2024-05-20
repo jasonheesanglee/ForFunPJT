@@ -11,7 +11,8 @@ def df_col_list(file_, df):
         f'{file_.name.split(".")[0]} 문서 내 대상이 될 컬럼명을 적어주세요!',
         placeholder='이름'
     )
-    return list(df[col_name])
+    if col_name:
+        return list(df[col_name])
 
 def upload_files(accept_multiple_files=False, sidebar=None, add_string=''):
     if sidebar:
@@ -55,7 +56,6 @@ with col1:
     files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
     if files:
         switch = True
-        
         for file_ in files:
             file_name = file_.name
             if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
