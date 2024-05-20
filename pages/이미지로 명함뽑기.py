@@ -130,10 +130,16 @@ with col1:
             if extension != 'png' or extension != 'jpg' or extension != 'jpeg':
                 switch_2=False
                 st.error('png, jpg, jpeg 파일만 지원합니다ㅠㅠ')
-            
-            if not re.match('[ㄱ-ㅎ가-힇]', title.split('_')[0]) and datetime.strptime("_".join(title.split('_')[1:]), '%m%d'):
+
+            if not re.match('[ㄱ-ㅎ가-힇]', title.split('_')[0]):
                 switch_2=False
                 st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
+
+            try:
+                datetime.strptime("_".join(title.split('_')[1:]), '%m%d')
+            except ValueError:
+                st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
+
 
             else:
                 if openai_api_key:
