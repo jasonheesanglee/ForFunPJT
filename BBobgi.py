@@ -8,7 +8,7 @@ from collections import defaultdict
 import streamlit as st
 
 try:
-    with open('config.json', r) as f:
+    with open('config.json', 'r') as f:
         conf = json.load(f)
         openai = OpenAI(api_key=conf['OpenAI_API'])
 except:
