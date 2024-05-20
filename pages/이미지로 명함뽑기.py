@@ -125,6 +125,7 @@ with col1:
         for file_ in files_:
             file_name = file_.name
             extension = file_name.split('.')[-1]
+            st.write(extension)
             title = file_name.split('.')[0].split('/')[-1]
             
             if extension.lower() != 'png' or extension.lower() != 'jpg' or extension.lower() != 'jpeg':
