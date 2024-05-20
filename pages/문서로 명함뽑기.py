@@ -55,8 +55,10 @@ with col1:
     files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
     if files:
         switch = True
+        
         for file_ in files:
-            if not (file_.endswith('txt') or file_.endswith('csv') or file_.endswith('xlsx')):
+            file_name = file_.name
+            if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
                 switch=False
         if switch == False:
             st.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
@@ -76,7 +78,8 @@ with col1:
     if files:
         switch = True
         for file_ in files:
-            if not (file_.endswith('txt') or file_.endswith('csv') or file_.endswith('xlsx')):
+            file_name = file_.name
+            if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
                 switch=False
         if switch == False:
             st.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
