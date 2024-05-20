@@ -10,7 +10,7 @@ import streamlit as st
 try:
     api_key = st.secrets['OPENAI_API']
     openai = OpenAI(api_key=api_key)
-    
+
 except:
     with open('config.json', 'r') as f:
         conf = json.load(f)
@@ -49,7 +49,8 @@ class BBobgi:
             messages=[
                 {'role':'system', 'content':'You are an expert in detecting date and time in any number formats and languages. \
                  You will be helping the user to detect date and time from the given image. \
-                 You need to return the output in {%m%d_%H%M} format'},
+                 You need to return the output in {%m%d_%H%M} format. \
+                 Return : %m%d_%H%M'},
                 {
                 'role': 'user',
                 'content':[
@@ -67,7 +68,12 @@ class BBobgi:
             ],
             temperature=0.0,
         )
-        return user_name, response.choices[0].message.content
+        pattern = r"\b(\d{4}_\d{4})\b"
+        date_time = re.findall(pattern, response.choices[0].message.content)
+        if date_time:
+            return user_name, date_time[0]
+        else:
+            return user_name, 'Error'
 
 
 
