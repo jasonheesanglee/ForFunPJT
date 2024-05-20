@@ -202,25 +202,25 @@ with col1:
 with col2:
     st.header('명함을 뽑아볼까요?')
     st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
-    if extracted_switch:
-        target_list = st.session_state['names'][initial_time.split('_')[0]]
+    
+    target_list = st.session_state['names'][initial_time.split('_')[0]]
 
-        n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
-        in_button = st.button('명함 뽑기!')
-        try:
-            n = int(n_input)
-        except ValueError:
-            st.error("Please enter a valid number for the count of names to draw.")
-            n = 0
+    n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
+    in_button = st.button('명함 뽑기!')
+    try:
+        n = int(n_input)
+    except ValueError:
+        st.error("Please enter a valid number for the count of names to draw.")
+        n = 0
 
-        if target_list and in_button:
-            if n!= '' and switch_2:
-                if not switch:
-                    manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
-                    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                    st.write(', '.join(choose_n))
+    if target_list and in_button:
+        if n!= '' and switch_2:
+            if not switch:
+                manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
+                choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+                st.write(', '.join(choose_n))
 
-                else:
-                    manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
-                    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                    st.write(', '.join(choose_n))
+            else:
+                manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
+                choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+                st.write(', '.join(choose_n))
