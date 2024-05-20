@@ -166,7 +166,7 @@ with col1:
 
                 finally:
                     if openai_api_key:
-                        user_name, extracted_time = bbobgi.image_extract_time(file_)
+                        user_name, extracted_time = bbobgi.image_extract_time(file_.bytes)
                         if extracted_time == None:
                             st.write(f'{file_}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
                         elif extracted_time.split('_')[0] != title.split('_')[-1]:
