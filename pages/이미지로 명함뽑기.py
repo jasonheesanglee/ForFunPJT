@@ -202,7 +202,7 @@ with col2:
     st.header('명함을 뽑아볼까요?')
     st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
     
-    target_list = st.session_state['names'][initial_time.split('_')[0]]
+    target_list = st.session_state['names'][str(initial_time.split('_')[0])]
 
     n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
     in_button = st.button('명함 뽑기!')
