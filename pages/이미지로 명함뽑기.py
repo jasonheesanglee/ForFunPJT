@@ -9,8 +9,6 @@ st.set_page_config(
     page_icon='💵'
 )
 
-switch = False
-switch_2 = True
 target_list = None
 
 ##############################################################################################################
@@ -74,14 +72,16 @@ def extract_name_list(files):
 st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
 
-openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', type='password')
+openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', type='password', disabled=False)
 api_button=None
 
 if openai_api_key:
-    api_button = st.sidebar.button('키 입력 완료')
+    api_button = st.sidebar.button('키 입력 완료', disabled=False)
 
 
 compare_list=None
+switch = False
+
 if api_button:
     initial_time = st.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
 
@@ -102,7 +102,9 @@ if api_button:
         st.sidebar.warning('업로드 대기 중...')
     compare_list = extract_name_list(files)
 
-if compare_list == list() or None:
+if compare_list == list():
+    exclude_yes_no = '제외 안함'
+elif compare_list == None:
     exclude_yes_no = '제외 안함'
 else:
     exclude_yes_no = '완료'
@@ -111,15 +113,17 @@ exclude_button = st.sidebar.button(exclude_yes_no)
 
 bbobgi = BBobgi(openai_api_key)
 extracted_switch = False
+
 st.session_state['names'] = {}
 col1, col2 = st.columns(2)
 with col1:
+    container_1 = st.container()
     # if exclude_button:
     st.header('문서 업로드')
     st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     st.write('이미지 파일들을 선택해주세요!')
-    
-    
+    switch_2 = True
+
     files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ')
     if files_:
         for file_ in files_:
@@ -172,23 +176,24 @@ with col2:
     if extracted_switch :
         target_list = st.session_state['names'][extracted_time.split('_')[0]]
 
-    n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
-    in_button = st.button('명함 뽑기!')
-    try:
-        n = int(n_input)
-    except ValueError:
-        st.error("Please enter a valid number for the count of names to draw.")
-        n = 0
+    if switch_2:
+        n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
+        in_button = st.button('명함 뽑기!')
+        try:
+            n = int(n_input)
+        except ValueError:
+            st.error("Please enter a valid number for the count of names to draw.")
+            n = 0
 
-    cont = st.container(height=300, border=True)
-    if target_list and in_button:
-        if n!= '' and switch_2:
-            if not switch:
-                manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
-                choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                cont.write(', '.join(choose_n))
+        cont = st.container(height=300, border=True)
+        if target_list and in_button:
+            if n!= '' and switch_2:
+                if not switch:
+                    manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
+                    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+                    cont.write(', '.join(choose_n))
 
-            else:
-                manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
-                choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                cont.write(', '.join(choose_n))
+                else:
+                    manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
+                    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+                    cont.write(', '.join(choose_n))
