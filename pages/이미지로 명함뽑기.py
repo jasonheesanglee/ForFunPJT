@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 
-st.title('Coming Soon')
+st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
 
 def get_all_images(list_names:list, list_images:list):
@@ -31,7 +31,7 @@ def df_col_list(file_, df):
     else: 
         return list()
 
-def upload_files(accept_multiple_files:bool=False, sidebar:bool=False, add_string:str=None):
+def upload_files(accept_multiple_files:bool=False, sidebar:bool=False, add_string:str=''):
     if sidebar:
         files = st.sidebar.file_uploader(
             f'{add_string}파일을 선택해 주세요.',
