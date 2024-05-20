@@ -38,7 +38,7 @@ def extract_name_list(files):
             list_of_col = df_col_list(file_, df)
             list_of_names.extend(list_of_col)
 
-        if file_.name.endswith('.txt'):
+        elif file_.name.endswith('.txt'):
             list_of_names.extend(bbobgi.extract_name_list(file_.read().decode('utf-8')))
     return list_of_names
 
