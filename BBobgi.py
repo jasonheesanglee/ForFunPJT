@@ -15,7 +15,7 @@ except:
         api_key=conf['OPENAI_API']    
 
 class BBobgi:
-    def __init__(self, openai_api_key):
+    def __init__(self, openai_api_key=api_key):
         self.pattern = '[^ㄱ-ㅎ가-힇a-zA-Z]'
         self.openai = OpenAI(api_key=openai_api_key)
 
