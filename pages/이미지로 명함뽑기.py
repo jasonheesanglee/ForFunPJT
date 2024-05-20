@@ -58,7 +58,7 @@ def extract_name_list(files):
             if list_of_col:
                 list_of_names.extend(list_of_col)
             else:
-                st.warning('좌측에 컬렴명을 입력해 주세요!')
+                st.warning('컬렴명을 입력해 주세요!')
                 return list_of_names
 
         elif file_.name.endswith('.txt'):
@@ -91,7 +91,8 @@ if api_button:
     if files:
         for file_ in files:
             file_name = file_.name
-            if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
+            extension = file_name.split('.')[-1]
+            if file_name.lower() not in ['txt', 'csv', 'xlsx']:
                 switch=True
         if switch == True:
             st.sidebar.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
@@ -102,98 +103,98 @@ if api_button:
         st.sidebar.warning('업로드 대기 중...')
     compare_list = extract_name_list(files)
 
-if compare_list == list():
-    exclude_yes_no = '제외 안함'
-elif compare_list == None:
-    exclude_yes_no = '제외 안함'
-else:
-    exclude_yes_no = '완료'
+    if compare_list == []:
+        exclude_yes_no = '제외 안함'
+    # elif compare_list == None:
+    #     exclude_yes_no = '제외 안함'
+    else:
+        exclude_yes_no = '완료'
     
-exclude_button = st.sidebar.button(exclude_yes_no)
+    exclude_button = st.sidebar.button(exclude_yes_no)
 
-bbobgi = BBobgi(openai_api_key)
-extracted_switch = False
+    bbobgi = BBobgi(openai_api_key)
+    extracted_switch = False
 
-st.session_state['names'] = {}
-col1, col2 = st.columns(2)
-with col1:
-    container_1 = st.container()
-    # if exclude_button:
-    st.header('문서 업로드')
-    st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
-    st.write('이미지 파일들을 선택해주세요!')
-    switch_2 = True
+    st.session_state['names'] = {}
+    col1, col2 = st.columns(2)
+    with col1:
+        container_1 = st.container()
+        # if exclude_button:
+        st.header('문서 업로드')
+        st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
+        st.write('이미지 파일들을 선택해주세요!')
+        switch_2 = True
 
-    files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ')
-    if files_:
-        for file_ in files_:
-            file_name = file_.name
-            extension = file_name.split('.')[-1]
-            # st.write(extension)
-            title = file_name.split('.')[0].split('/')[-1]
-            
-            if extension.lower() not in ['png', 'jpg', 'jpeg']:
-                switch_2=False
-                st.error('png, jpg, jpeg 파일만 지원합니다ㅠㅠ')
+        files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ')
+        if files_:
+            for file_ in files_:
+                file_name = file_.name
+                extension = file_name.split('.')[-1]
+                # st.write(extension)
+                title = file_name.split('.')[0].split('/')[-1]
+                
+                if extension.lower() not in ['png', 'jpg', 'jpeg']:
+                    switch_2=False
+                    st.error('png, jpg, jpeg 파일만 지원합니다ㅠㅠ')
 
-            elif not re.match('[ㄱ-ㅎ가-힇]', title.split('_')[0]):
-                switch_2=False
-                st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
-
-            else:
-                try:
-                    datetime.strptime("_".join(title.split('_')[1:]), '%m%d')
-                except ValueError:
+                elif not re.match('[ㄱ-ㅎ가-힇]', title.split('_')[0]):
+                    switch_2=False
                     st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
 
-                finally:
-                    if openai_api_key:
-                        user_name, extracted_time = bbobgi.image_extract_time(file_, openai_api_key)
-                        if extracted_time == None:
-                            st.write(f'{file_}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
-                        elif extracted_time.split('_')[0] != title.split('_')[-1]:
-                            st.write(f'{file_}은 날짜가 다릅니다. 유효하지 않습니다.')
-                        elif int(extracted_time.split('_')[-1]) < int(initial_time):
-                            st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
-                        else:
-                            if st.session_state['names']:
-                                extracted_switch = True
-                                if extracted_time.split('_')[0] in st.session_state['names']:
-                                    st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
-                                else: 
-                                    st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
-
-        if switch_2 == False:
-            st.error('업로드 실패!')
-        else:
-            st.success('업로드 성공!')
-    else:
-        st.warning('업로드 대기 중...')
-
-with col2:
-    st.header('명함을 뽑아볼까요?')
-    st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
-    if extracted_switch :
-        target_list = st.session_state['names'][extracted_time.split('_')[0]]
-
-    if switch_2:
-        n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
-        in_button = st.button('명함 뽑기!')
-        try:
-            n = int(n_input)
-        except ValueError:
-            st.error("Please enter a valid number for the count of names to draw.")
-            n = 0
-
-        cont = st.container(height=300, border=True)
-        if target_list and in_button:
-            if n!= '' and switch_2:
-                if not switch:
-                    manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
-                    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                    cont.write(', '.join(choose_n))
-
                 else:
-                    manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
-                    choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                    cont.write(', '.join(choose_n))
+                    try:
+                        datetime.strptime("_".join(title.split('_')[1:]), '%m%d')
+                    except ValueError:
+                        st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
+
+                    finally:
+                        if openai_api_key:
+                            user_name, extracted_time = bbobgi.image_extract_time(file_, openai_api_key)
+                            if extracted_time == None:
+                                st.write(f'{file_}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
+                            elif extracted_time.split('_')[0] != title.split('_')[-1]:
+                                st.write(f'{file_}은 날짜가 다릅니다. 유효하지 않습니다.')
+                            elif int(extracted_time.split('_')[-1]) < int(initial_time):
+                                st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
+                            else:
+                                if st.session_state['names']:
+                                    extracted_switch = True
+                                    if extracted_time.split('_')[0] in st.session_state['names']:
+                                        st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
+                                    else: 
+                                        st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
+
+            if switch_2 == False:
+                st.error('업로드 실패!')
+            else:
+                st.success('업로드 성공!')
+        else:
+            st.warning('업로드 대기 중...')
+
+    with col2:
+        st.header('명함을 뽑아볼까요?')
+        st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
+        if extracted_switch :
+            target_list = st.session_state['names'][extracted_time.split('_')[0]]
+
+        if switch_2:
+            n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
+            in_button = st.button('명함 뽑기!')
+            try:
+                n = int(n_input)
+            except ValueError:
+                st.error("Please enter a valid number for the count of names to draw.")
+                n = 0
+
+            cont = st.container(height=300, border=True)
+            if target_list and in_button:
+                if n!= '' and switch_2:
+                    if not switch:
+                        manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
+                        choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+                        cont.write(', '.join(choose_n))
+
+                    else:
+                        manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
+                        choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+                        cont.write(', '.join(choose_n))
