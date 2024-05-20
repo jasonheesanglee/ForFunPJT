@@ -55,10 +55,10 @@ def df_col_list(file_, df):
 #     if type_util.is_pillow_image(obj=image_path)
 
 
-def save_image(image:PIL.Image, date:str, numb:int, title:str):
+def save_image(image:PIL.Image, file_name:str):
     if 'image_storage' not in st.session_state:
         st.session_state['image_storage'] = []
-    temp_name = f'{date}_{numb}_{title}.png'
+    temp_name = f'{file_name}.png'
     image.save(temp_name)
     st.session_state['image_storage'].append(temp_name)
 
@@ -175,7 +175,7 @@ with col1:
                 finally:
                     if openai_api_key:
                         content = PIL.Image.open(file_)
-                        save_image(title=file_name, date=initial_time.split('_')[0], image=content, numb=idx)
+                        save_image(file_name=file_name, image=content)
                         img_path = st.session_state['image_storage'][-1]
                         user_name, extracted_time = bbobgi.image_extract_time(img_path)
                         if extracted_time == None:
