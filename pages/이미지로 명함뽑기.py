@@ -94,7 +94,7 @@ with col1:
     st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     
     
-
+    sss = False
     files_ = upload_files(accept_multiple_files=True, sidebar=False)
     if files_:
         switch_2 = True
@@ -119,6 +119,7 @@ with col1:
                     st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
                 else:
                     if st.session_state['names']:
+                        sss = True
                         if extracted_time.split('_')[0] in st.session_state['names']:
                             st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
                         else: # extracted_time.split('_')[0] not in st.session_state['names']:
@@ -136,7 +137,9 @@ with col1:
 with col2:
     st.header('명함을 뽑아볼까요?')
     st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
-    target_list = st.session_state['names'][extracted_time.split('_')[0]]
+    target_list = None
+    if sss:
+        target_list = st.session_state['names'][extracted_time.split('_')[0]]
 
     n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
     in_button = st.button('명함 뽑기!')
@@ -147,7 +150,7 @@ with col2:
         n = 0
 
     cont = st.container(height=300, border=True)
-    if in_button:
+    if target_list and in_button:
         if n!= '' and switch_2:
             if not switch:
                 manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
