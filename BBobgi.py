@@ -53,7 +53,7 @@ class BBobgi:
                 {'role':'system', 'content':'You are an expert in detecting date and time in any number formats and languages. \
                  You will be helping the user to detect date and time from the given image. \
                  You need to return the output in {%m%d_%H%M} format. \
-                 Return : %m%d_%H%M'},
+                 Make sure you try your best to return the hours in 24H format'},
                 {
                 'role': 'user',
                 'content':[
