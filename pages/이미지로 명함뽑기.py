@@ -131,33 +131,30 @@ with col1:
                 switch_2=False
                 st.error('png, jpg, jpeg 파일만 지원합니다ㅠㅠ')
 
-            if not re.match('[ㄱ-ㅎ가-힇]', title.split('_')[0]):
+            elif not re.match('[ㄱ-ㅎ가-힇]', title.split('_')[0]):
                 switch_2=False
                 st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
 
-            try:
-                datetime.strptime("_".join(title.split('_')[1:]), '%m%d')
-            except ValueError:
-                st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
-
-
             else:
-                if openai_api_key:
-                    
-                    user_name, extracted_time = bbobgi.image_extract_time(file_, openai_api_key)
-                    if extracted_time.split('_')[0] != title.split('_')[-1]:
-                        st.write(f'{file_}은 날짜가 다릅니다. 유효하지 않습니다.')
-                    elif int(extracted_time.split('_')[-1]) < int(initial_time):
-                        st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
-                    else:
-                        if st.session_state['names']:
-                            extracted_switch = True
-                            if extracted_time.split('_')[0] in st.session_state['names']:
-                                st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
-                            else: # extracted_time.split('_')[0] not in st.session_state['names']:
-                                st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
-                else:
-                    st.error('좌측에서 OpenAI API Key를 입력해주세요.')
+                try:
+                    datetime.strptime("_".join(title.split('_')[1:]), '%m%d')
+                except ValueError:
+                    st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
+
+                finally:
+                    if openai_api_key:
+                        user_name, extracted_time = bbobgi.image_extract_time(file_, openai_api_key)
+                        if extracted_time.split('_')[0] != title.split('_')[-1]:
+                            st.write(f'{file_}은 날짜가 다릅니다. 유효하지 않습니다.')
+                        elif int(extracted_time.split('_')[-1]) < int(initial_time):
+                            st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
+                        else:
+                            if st.session_state['names']:
+                                extracted_switch = True
+                                if extracted_time.split('_')[0] in st.session_state['names']:
+                                    st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
+                                else: # extracted_time.split('_')[0] not in st.session_state['names']:
+                                    st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
 
         if switch_2 == False:
             st.error('업로드 실패!')
