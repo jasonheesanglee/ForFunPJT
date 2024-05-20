@@ -123,6 +123,7 @@ with col1:
     if files_:
         for file_ in files_:
             file_name = file_.name
+            st.write(file_name)
             extension = file_name.split('.')[-1]
             # st.write(extension)
             title = file_name.split('.')[0].split('/')[-1]
