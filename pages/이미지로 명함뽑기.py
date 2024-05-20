@@ -80,6 +80,7 @@ api_button=None
 if openai_api_key:
     api_button = st.sidebar.button('키 입력 완료')
 
+initial_time=None
 compare_list=None
 if api_button:
     initial_time = st.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
