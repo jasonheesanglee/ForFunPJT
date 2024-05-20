@@ -64,6 +64,8 @@ def extract_name_list(files):
             list_of_names.extend(bbobgi.extract_name_list(file_.read().decode('utf-8')))
     return list_of_names
 
+st.session_state['names'] = {}
+
 col1, col2 = st.columns(2)
 with col1:
     st.header('문서 업로드')
@@ -91,7 +93,8 @@ with col1:
     st.write('')
     st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     
-    st.session_state['names'] = {}
+    
+
     files_ = upload_files(accept_multiple_files=True, sidebar=False)
     if files_:
         switch_2 = True
@@ -115,10 +118,13 @@ with col1:
                 elif int(extracted_time.split('_')[-1]) < int(initial_time):
                     st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
                 else:
-                    if extracted_time.split('_')[0] in st.session_state['names']:
-                        st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
-                    elif extracted_time.split('_')[0] not in st.session_state['names']:
-                        st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
+                    if st.session_state['names']:
+                        if extracted_time.split('_')[0] in st.session_state['names']:
+                            st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
+                        else: # extracted_time.split('_')[0] not in st.session_state['names']:
+                            st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
+                        # else:
+                            # st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
 
         if switch_2 == False:
             st.error('업로드 실패!')
