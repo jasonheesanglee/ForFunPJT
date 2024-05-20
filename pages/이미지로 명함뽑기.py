@@ -91,7 +91,9 @@ with col1:
     st.write('')
     st.write('')
     st.write('')
-    st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다! 이미지 파일들을 선택해주세요!')
+    st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
+    st.write('이미지 파일들을 선택해주세요!')
+    
     
     
     sss = False
