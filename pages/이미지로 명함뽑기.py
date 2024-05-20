@@ -3,6 +3,8 @@ from datetime import datetime
 import pandas as pd
 import streamlit as st
 from BBobgi import BBobgi
+# from streamlit import type_util
+
 
 st.set_page_config(
     page_title='자동 명함뽑기',
@@ -46,17 +48,36 @@ def df_col_list(file_, df):
     else: 
         return list()
 
-def upload_files(accept_multiple_files:bool=False, sidebar:bool=False, add_string:str=''):
+# def save_image_files(image_path):
+
+#     if type_util.is_pillow_image(obj=image_path)
+
+
+def upload_files(accept_multiple_files:bool=False, sidebar:bool=False, add_string:str='', type=None):
     if sidebar:
-        files = st.sidebar.file_uploader(
-            f'{add_string}파일을 선택해 주세요.',
-            accept_multiple_files=accept_multiple_files
-        )
+        if type:
+            files = st.sidebar.file_uploader(
+                f'{add_string}파일을 선택해 주세요.',
+                accept_multiple_files=accept_multiple_files,
+                type=type
+            )
+        else:
+            files = st.sidebar.file_uploader(
+                f'{add_string}파일을 선택해 주세요.',
+                accept_multiple_files=accept_multiple_files
+            )
     else:
-        files = st.file_uploader(
-            f'{add_string}파일을 선택해 주세요.',
-            accept_multiple_files=accept_multiple_files
-        )
+        if type:
+            files = st.file_uploader(
+                f'{add_string}파일을 선택해 주세요.',
+                accept_multiple_files=accept_multiple_files,
+                type=type
+            )
+        else:
+            files = st.file_uploader(
+                f'{add_string}파일을 선택해 주세요.',
+                accept_multiple_files=accept_multiple_files
+            )
     return files
 
 def extract_name_list(files):
@@ -119,14 +140,13 @@ with col1:
     st.write('이미지 파일들을 선택해주세요!')
     switch_2 = True
 
-    files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ')
+    files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ', type=['jpg', 'png', 'jpeg'])
     if files_:
         for file_ in files_:
             file_name = file_.name
-            # st.write(file_name)
             extension = file_name.split('.')[-1]
-            # st.write(extension)
             title = file_name.split('.')[0]
+
             
             if extension.lower() not in ['png', 'jpg', 'jpeg']:
                 switch_2=False
@@ -145,7 +165,7 @@ with col1:
 
                 finally:
                     if openai_api_key:
-                        user_name, extracted_time = bbobgi.image_extract_time(file_)
+                        user_name, extracted_time = bbobgi.image_extract_time(file_name)
                         if extracted_time == None:
                             st.write(f'{file_}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
                         elif extracted_time.split('_')[0] != title.split('_')[-1]:
