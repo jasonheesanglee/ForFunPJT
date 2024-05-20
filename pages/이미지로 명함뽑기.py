@@ -10,6 +10,7 @@ st.set_page_config(
 )
 
 api_button=None
+exclude_button=None
 sss = False
 switch = False
 switch_2 = True
@@ -103,12 +104,12 @@ if api_button:
         st.sidebar.warning('업로드 대기 중...')
     compare_list = extract_name_list(files)
 
-if compare_list == list():
-    exclude_yes_no = '제외 안함'
-else:
-    exclude_yes_no = '완료'
-    
-exclude_button = st.sidebar.button(exclude_yes_no)
+    if compare_list == list():
+        exclude_yes_no = '제외 안함'
+    else:
+        exclude_yes_no = '완료'
+        
+    exclude_button = st.sidebar.button(exclude_yes_no)
 
 bbobgi = BBobgi(openai_api_key)
 
