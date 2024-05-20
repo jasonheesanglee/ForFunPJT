@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 target_list = None
-
+extracted_switch = False
 
 st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
