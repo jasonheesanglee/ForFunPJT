@@ -3,6 +3,7 @@ import re
 from datetime import datetime
 import pandas as pd
 import streamlit as st
+import PIL
 from BBobgi import BBobgi
 # from streamlit import type_util
 
@@ -147,7 +148,8 @@ with col1:
             file_name = file_.name
             extension = file_name.split('.')[-1]
             title = file_name.split('.')[0]
-
+            content = PIL.Image.open(file_)
+            st.image(content)
             
             if extension.lower() not in ['png', 'jpg', 'jpeg']:
                 switch_2=False
@@ -166,7 +168,7 @@ with col1:
 
                 finally:
                     if openai_api_key:
-                        user_name, extracted_time = bbobgi.image_extract_time(file_.read())
+                        user_name, extracted_time = bbobgi.image_extract_time(content)
                         if extracted_time == None:
                             st.write(f'{file_}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
                         elif extracted_time.split('_')[0] != title.split('_')[-1]:
