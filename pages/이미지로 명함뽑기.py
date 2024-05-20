@@ -76,53 +76,43 @@ openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세�
 api_switch = False
 
 if openai_api_key:
-    api_button = st.sidebar.button('키 입력 완료', disabled=False)
+    api_button = st.sidebar.button('키 입력 완료')
     if api_button:
         api_switch = True
 
 
 compare_list=None
 switch = False
-exclude_button=None
 
-if api_switch:
-    initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
+initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
 
-    st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
-    st.sidebar.write('이 부분은 필수가 아닙니다.')
-    files = upload_files(accept_multiple_files=True, sidebar=True, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
-    if files:
-        for file_ in files:
-            file_name = file_.name
-            extension = file_name.split('.')[-1]
-            if file_name.lower() not in ['txt', 'csv', 'xlsx']:
-                switch=True
-        if switch == True:
-            st.sidebar.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
-        else:
-            st.sidebar.success('업로드 성공!')
-
+st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
+st.sidebar.write('이 부분은 필수가 아닙니다.')
+files = upload_files(accept_multiple_files=True, sidebar=True, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
+if files:
+    for file_ in files:
+        file_name = file_.name
+        extension = file_name.split('.')[-1]
+        if file_name.lower() not in ['txt', 'csv', 'xlsx']:
+            switch=True
+    if switch == True:
+        st.sidebar.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
     else:
-        st.sidebar.warning('업로드 대기 중...')
-    compare_list = extract_name_list(files)
+        st.sidebar.success('업로드 성공!')
 
-    if compare_list == []:
-        exclude_yes_no = '제외 안함'
+else:
+    st.sidebar.warning('업로드 대기 중...')
+compare_list = extract_name_list(files)
 
-    else:
-        exclude_yes_no = '완료'
-
-    exclude_button = st.sidebar.button(exclude_yes_no)
 
 bbobgi = BBobgi(openai_api_key)
-extracted_switch = False
 
 st.session_state['names'] = {}
 col1, col2 = st.columns(2)
 
 with col1:
     container_1 = st.container()
-    # if exclude_button:
+
     st.header('문서 업로드')
     st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     st.write('이미지 파일들을 선택해주세요!')
