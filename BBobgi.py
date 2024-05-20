@@ -10,9 +10,9 @@ import streamlit as st
 try:
     with open('config.json', 'r') as f:
         conf = json.load(f)
-        openai = OpenAI(api_key=conf['OpenAI_API'])
+        openai = OpenAI(api_key=conf['OPENAI_API'])
 except:
-    openai = OpenAI(api_key=st.secrets.get('OpenAI_API'))
+    openai = OpenAI(api_key=st.secrets.get('OPENAI_API'))
 
 class BBobgi:
     def __init__(self):
