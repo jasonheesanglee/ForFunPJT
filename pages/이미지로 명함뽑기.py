@@ -111,10 +111,9 @@ if api_button:
     bbobgi = BBobgi(openai_api_key)
 
     st.session_state['names'] = {}
-
     col1, col2 = st.columns(2)
-    if exclude_button:
-        with col1:
+    with col1:
+        if exclude_button:
             st.header('문서 업로드')
             st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
             st.write('이미지 파일들을 선택해주세요!')
@@ -161,7 +160,8 @@ if api_button:
             else:
                 st.warning('업로드 대기 중...')
 
-        with col2:
+    with col2:
+        if exclude_button:
             st.header('명함을 뽑아볼까요?')
             st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
             if sss:
