@@ -80,7 +80,7 @@ api_button=None
 if openai_api_key:
     api_button = st.sidebar.button('키 입력 완료')
 
-initial_time=''
+
 compare_list=None
 if api_button:
     initial_time = st.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
@@ -110,6 +110,7 @@ else:
 exclude_button = st.sidebar.button(exclude_yes_no)
 
 bbobgi = BBobgi(openai_api_key)
+extracted_switch = False
 st.session_state['names'] = {}
 col1, col2 = st.columns(2)
 with col1:
@@ -144,6 +145,7 @@ with col1:
                         st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
                     else:
                         if st.session_state['names']:
+                            extracted_switch = True
                             if extracted_time.split('_')[0] in st.session_state['names']:
                                 st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
                             else: # extracted_time.split('_')[0] not in st.session_state['names']:
@@ -161,8 +163,8 @@ with col1:
 with col2:
     st.header('명함을 뽑아볼까요?')
     st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
-
-    target_list = st.session_state['names'][initial_time.split('_')[0]]
+    if extracted_switch :
+        target_list = st.session_state['names'][extracted_time.split('_')[0]]
 
     n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
     in_button = st.button('명함 뽑기!')
