@@ -13,7 +13,8 @@ st.set_page_config(
 st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
 openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.')
-api_button = st.sidebar.button('키 입력 완료')
+if openai_api_key:
+    api_button = st.sidebar.button('키 입력 완료')
 bbobgi = BBobgi(openai_api_key)
 
 def get_all_images(list_names:list, list_images:list):
