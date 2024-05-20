@@ -139,7 +139,7 @@ with col1:
                 try:
                     datetime.strptime("_".join(title.split('_')[1:]), '%m%d')
                 except ValueError:
-                    st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
+                    st.error('파일명은 "성함_**월일**" 양식과 동일해야 합니다. ex) 홍길동_0520')
 
                 finally:
                     if openai_api_key:
