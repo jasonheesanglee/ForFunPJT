@@ -145,7 +145,9 @@ with col1:
                 finally:
                     if openai_api_key:
                         user_name, extracted_time = bbobgi.image_extract_time(file_, openai_api_key)
-                        if extracted_time.split('_')[0] != title.split('_')[-1]:
+                        if extracted_time == None:
+                            st.write(f'{file_}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
+                        elif extracted_time.split('_')[0] != title.split('_')[-1]:
                             st.write(f'{file_}은 날짜가 다릅니다. 유효하지 않습니다.')
                         elif int(extracted_time.split('_')[-1]) < int(initial_time):
                             st.write(f'{file_}은 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
@@ -154,7 +156,7 @@ with col1:
                                 extracted_switch = True
                                 if extracted_time.split('_')[0] in st.session_state['names']:
                                     st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
-                                else: # extracted_time.split('_')[0] not in st.session_state['names']:
+                                else: 
                                     st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
 
         if switch_2 == False:

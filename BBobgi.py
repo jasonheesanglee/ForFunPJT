@@ -71,7 +71,7 @@ class BBobgi:
         if date_time:
             return user_name, date_time[0]
         else:
-            return user_name, 'Error'
+            return user_name, None
 
 
 
