@@ -138,8 +138,9 @@ with col1:
 
             else:
                 try:
-                    datetime.strptime("_".join(title.split('_')[1]), '%m%d')
+                    datetime.strptime(title.split('_')[1], '%m%d')
                 except ValueError:
+                    switch_2=False
                     st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. 월-일. ex) 홍길동_0520')
 
                 finally:
