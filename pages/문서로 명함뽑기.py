@@ -4,7 +4,7 @@ st.set_page_config('자동 명함뽑기', page_icon='💵')
 import pandas as pd
 from BBobgi import BBobgi
 
-bbobgi = BBobgi(openai_api_key)
+bbobgi = BBobgi()
 
 def df_col_list(file_, df):
     col_name = st.sidebar.text_input(
