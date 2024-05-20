@@ -10,6 +10,7 @@ import streamlit as st
 try:
     api_key = st.secrets['OPENAI_API']
     openai = OpenAI(api_key=api_key)
+    
 except:
     with open('config.json', 'r') as f:
         conf = json.load(f)

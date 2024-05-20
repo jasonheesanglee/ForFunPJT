@@ -67,7 +67,7 @@ def extract_name_list(files):
 col1, col2 = st.columns(2)
 with col1:
     st.header('문서 업로드')
-    initial_time = st.text_input(placeholder='설문조사를 내보낸 날짜와 시간 %m%d_%H%M의 형식으로, 예시: 0525_1530')
+    initial_time = st.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
 
     st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
     st.write('이 부분은 필수가 아닙니다.')
