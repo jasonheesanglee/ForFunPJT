@@ -139,7 +139,7 @@ else:
     st.sidebar.warning('업로드 대기 중...')
 compare_list = extract_name_list(files)
 
-st.session_state['names'] = {}
+st.session_state['names'] = dict()
 col1, col2 = st.columns(2)
 
 with col1:
@@ -186,7 +186,6 @@ with col1:
                             st.write(f'{file_name}에서 검출된 시간: {extracted_time.split("_")[-1]}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
                         else:
                             if st.session_state['names']:
-                                extracted_switch = True
                                 if extracted_time.split('_')[0] in st.session_state['names']:
                                     st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
                                 else: 
