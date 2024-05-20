@@ -83,6 +83,7 @@ if openai_api_key:
 
 compare_list=None
 switch = False
+exclude_button=None
 
 if api_switch:
     initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
