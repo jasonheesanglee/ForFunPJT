@@ -54,9 +54,17 @@ with col1:
     st.write('이 부분은 필수가 아닙니다.',)
     files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
     if files:
-        st.success('업로드 성공!')
+        switch = True
+        for file_ in files:
+            if not (file_.endswith('txt') or file_.endswith('csv') or file_.endswith('xlsx')):
+                switch=False
+        if switch == False:
+            st.error('업로드 실패!')
+        else:
+            st.success('업로드 성공!')
+
     else:
-        st.warning('업로드 실패!')
+        st.warning('업로드 대기 중')
     compare_list = extract_name_list(files)
     st.write('')
     st.write('')
