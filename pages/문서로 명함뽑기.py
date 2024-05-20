@@ -75,9 +75,9 @@ with col1:
     
 
     files_ = upload_files(accept_multiple_files=True, sidebar=False)
-    if files:
+    if files_:
         switch_2 = True
-        for file_ in files:
+        for file_ in files_:
             file_name = file_.name
             if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
                 switch_2=False
