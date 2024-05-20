@@ -73,16 +73,18 @@ st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
 
 openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', type='password', disabled=False)
-api_button=None
+api_switch = False
 
 if openai_api_key:
     api_button = st.sidebar.button('키 입력 완료', disabled=False)
+    if api_button:
+        api_switch = True
 
 
 compare_list=None
 switch = False
 
-if api_button:
+if api_switch:
     initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
 
     st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
