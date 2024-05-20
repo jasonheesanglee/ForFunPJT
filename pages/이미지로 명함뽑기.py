@@ -132,7 +132,7 @@ with col1:
                 switch_2=False
                 st.error('png, jpg, jpeg 파일만 지원합니다ㅠㅠ')
 
-            elif not re.match('[ㄱ-ㅎ가-힇+]', title.split('_')[0]):
+            elif not re.match('[ㄱ-ㅎ가-힇+]', title):
                 switch_2=False
                 st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
 
