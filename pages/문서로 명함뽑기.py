@@ -59,12 +59,12 @@ with col1:
             if not (file_.endswith('txt') or file_.endswith('csv') or file_.endswith('xlsx')):
                 switch=False
         if switch == False:
-            st.error('업로드 실패!')
+            st.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
         else:
             st.success('업로드 성공!')
 
     else:
-        st.warning('업로드 대기 중')
+        st.warning('업로드 대기 중...')
     compare_list = extract_name_list(files)
     st.write('')
     st.write('')
@@ -73,10 +73,17 @@ with col1:
     
 
     files_ = upload_files(accept_multiple_files=True, sidebar=False)
-    if files_:
-        st.success('업로드 성공!')
+    if files:
+        switch = True
+        for file_ in files:
+            if not (file_.endswith('txt') or file_.endswith('csv') or file_.endswith('xlsx')):
+                switch=False
+        if switch == False:
+            st.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
+        else:
+            st.success('업로드 성공!')
     else:
-        st.warning('업로드 실패!')
+        st.warning('업로드 대기 중...')
     target_list = extract_name_list(files_)
 
 with col2:
