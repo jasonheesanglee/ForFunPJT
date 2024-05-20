@@ -9,10 +9,17 @@ st.set_page_config(
     page_icon='💵'
 )
 
+api_button=None
+sss = False
+switch = False
+switch_2 = True
+target_list = None
+
 
 st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
 openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.')
+api_button=None
 if openai_api_key:
     api_button = st.sidebar.button('키 입력 완료')
 bbobgi = BBobgi(openai_api_key)
@@ -79,7 +86,6 @@ if api_button:
         st.write('이 부분은 필수가 아닙니다.')
         files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
         if files:
-            switch = False
             for file_ in files:
                 file_name = file_.name
                 if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
@@ -99,11 +105,8 @@ if api_button:
         st.write('이미지 파일들을 선택해주세요!')
         
         
-        
-        sss = False
         files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ')
         if files_:
-            switch_2 = True
             for file_ in files_:
                 file_name = file_.name
                 extension = file_name.split('.')[-1]
@@ -146,7 +149,6 @@ if api_button:
     with col2:
         st.header('명함을 뽑아볼까요?')
         st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
-        target_list = None
         if sss:
             target_list = st.session_state['names'][extracted_time.split('_')[0]]
 
