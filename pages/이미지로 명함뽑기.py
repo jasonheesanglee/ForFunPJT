@@ -98,7 +98,7 @@ with col1:
     
     
     sss = False
-    files_ = upload_files(accept_multiple_files=True, sidebar=False)
+    files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ')
     if files_:
         switch_2 = True
         for file_ in files_:
@@ -109,7 +109,7 @@ with col1:
             if extension != 'png' or extension != 'jpg' or extension != 'jpeg':
                 switch_2=False
                 st.error('png, jpg, jpeg 파일만 지원합니다ㅠㅠ')
-                
+            
             if not re.match('[ㄱ-ㅎ가-힇]', title.split('_')[0]) and datetime.strptime("_".join(title.split('_')[1:]), '%m%d'):
                 switch_2=False
                 st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
