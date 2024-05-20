@@ -11,6 +11,20 @@ st.set_page_config(
 
 target_list = None
 
+
+st.title('이미지로 명함뽑기!')
+st.sidebar.title('방식 설정')
+
+openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', type='password', disabled=False)
+api_switch = False
+
+if openai_api_key:
+    api_button = st.sidebar.button('키 입력 완료')
+    if api_button:
+        api_switch = True
+
+bbobgi = BBobgi(openai_api_key)
+
 ##############################################################################################################
 ##############################################################################################################
 ##############################################################################################################
@@ -69,17 +83,6 @@ def extract_name_list(files):
 ##############################################################################################################
 ##############################################################################################################
 
-st.title('이미지로 명함뽑기!')
-st.sidebar.title('방식 설정')
-
-openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', type='password', disabled=False)
-api_switch = False
-
-if openai_api_key:
-    api_button = st.sidebar.button('키 입력 완료')
-    if api_button:
-        api_switch = True
-
 
 compare_list=None
 switch = False
@@ -103,9 +106,6 @@ if files:
 else:
     st.sidebar.warning('업로드 대기 중...')
 compare_list = extract_name_list(files)
-
-
-bbobgi = BBobgi(openai_api_key)
 
 st.session_state['names'] = {}
 col1, col2 = st.columns(2)
