@@ -124,10 +124,10 @@ with col1:
     if files_:
         for file_ in files_:
             file_name = file_.name
-            extension = file_name.split('.')[-1].lower()
+            extension = file_name.split('.')[-1]
             title = file_name.split('.')[0].split('/')[-1]
             
-            if extension != 'png' or extension != 'jpg' or extension != 'jpeg':
+            if extension.lower() != 'png' or extension.lower() != 'jpg' or extension.lower() != 'jpeg':
                 switch_2=False
                 st.error('png, jpg, jpeg 파일만 지원합니다ㅠㅠ')
 
