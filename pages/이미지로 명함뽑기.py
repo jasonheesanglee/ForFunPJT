@@ -15,14 +15,9 @@ switch = False
 switch_2 = True
 target_list = None
 
-
-st.title('이미지로 명함뽑기!')
-st.sidebar.title('방식 설정')
-openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.')
-api_button=None
-if openai_api_key:
-    api_button = st.sidebar.button('키 입력 완료')
-bbobgi = BBobgi(openai_api_key)
+##############################################################################################################
+##############################################################################################################
+##############################################################################################################
 
 def get_all_images(list_names:list, list_images:list):
     name_time = {}
@@ -74,33 +69,55 @@ def extract_name_list(files):
             list_of_names.extend(bbobgi.extract_name_list(file_.read().decode('utf-8')))
     return list_of_names
 
+##############################################################################################################
+##############################################################################################################
+##############################################################################################################
+
+st.title('이미지로 명함뽑기!')
+st.sidebar.title('방식 설정')
+disable_switch = False
+
+openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', disabled=disable_switch)
+api_button=None
+if openai_api_key:
+    api_button = st.sidebar.button('키 입력 완료', disabled=disable_switch)
+    disable_switch=True
+
+if api_button:
+    initial_time = st.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
+
+    st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
+    st.sidebar.write('이 부분은 필수가 아닙니다.')
+    files = upload_files(accept_multiple_files=True, sidebar=True, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
+    if files:
+        for file_ in files:
+            file_name = file_.name
+            if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
+                switch=True
+        if switch == True:
+            st.sidebar.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
+        else:
+            st.sidebar.success('업로드 성공!')
+
+    else:
+        st.sidebar.warning('업로드 대기 중...')
+    compare_list = extract_name_list(files)
+
+if compare_list == list():
+    exclude_yes_no = '제외 안함'
+else:
+    exclude_yes_no = '완료'
+    
+exclude_button = st.sidebar.button(exclude_yes_no)
+
+bbobgi = BBobgi(openai_api_key)
+
 st.session_state['names'] = {}
 
 col1, col2 = st.columns(2)
-if api_button:
+if exclude_button:
     with col1:
         st.header('문서 업로드')
-        initial_time = st.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
-
-        st.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
-        st.write('이 부분은 필수가 아닙니다.')
-        files = upload_files(accept_multiple_files=True, sidebar=False, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
-        if files:
-            for file_ in files:
-                file_name = file_.name
-                if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
-                    switch=True
-            if switch == True:
-                st.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
-            else:
-                st.success('업로드 성공!')
-
-        else:
-            st.warning('업로드 대기 중...')
-        compare_list = extract_name_list(files)
-        st.write('')
-        st.write('')
-        st.write('')
         st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
         st.write('이미지 파일들을 선택해주세요!')
         
