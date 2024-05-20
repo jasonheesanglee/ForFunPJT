@@ -9,10 +9,9 @@ bbobgi = BBobgi()
 def df_col_list(file_, df):
     col_name = st.sidebar.text_input(
         f'{file_.name.split(".")[0]} 문서 내 대상이 될 컬럼명을 적어주세요!',
-        placeholder='이름'
+        placeholder='컬럼명'
     )
-    if col_name:
-        return list(df[col_name])
+    return list(df[col_name])
 
 def upload_files(accept_multiple_files=False, sidebar=None, add_string=''):
     if sidebar:
@@ -37,7 +36,11 @@ def extract_name_list(files):
                 df = pd.read_excel(file_)
 
             list_of_col = df_col_list(file_, df)
-            list_of_names.extend(list_of_col)
+            if list_of_col:
+                list_of_names.extend(list_of_col)
+            else:
+                st.warning('좌측에 컬렴명을 입력해 주세요!')
+                return list_of_names
 
         elif file_.name.endswith('.txt'):
             list_of_names.extend(bbobgi.extract_name_list(file_.read().decode('utf-8')))
