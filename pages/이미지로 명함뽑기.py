@@ -17,8 +17,6 @@ target_list = None
 
 st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
-current_path = os.getcwd()
-st.sidebar.write(os.listdir('./pages/'))
 
 openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', type='password', disabled=False)
 api_switch = False
@@ -168,7 +166,7 @@ with col1:
 
                 finally:
                     if openai_api_key:
-                        user_name, extracted_time = bbobgi.image_extract_time(os.path.join(current_path,file_name))
+                        user_name, extracted_time = bbobgi.image_extract_time(file_)
                         if extracted_time == None:
                             st.write(f'{file_}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
                         elif extracted_time.split('_')[0] != title.split('_')[-1]:
