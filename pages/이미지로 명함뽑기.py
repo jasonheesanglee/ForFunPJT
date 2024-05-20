@@ -62,8 +62,9 @@ def upload_files(accept_multiple_files:bool=False, sidebar:bool=False, add_strin
 def extract_name_list(files):
     list_of_names = []
     for file_ in files:
-        if file_.name.endswith('.csv') or file_.name.endswith('.xlsx'):
-            if file_.name.endswith('.csv'):
+        file_name = file_.name.lower()
+        if file_name.endswith('.csv') or file_name.endswith('.xlsx'):
+            if file_name.endswith('.csv'):
                 df = pd.read_csv(file_)
             else:
                 df = pd.read_excel(file_)
@@ -75,7 +76,7 @@ def extract_name_list(files):
                 st.warning('컬렴명을 입력해 주세요!')
                 return list_of_names
 
-        elif file_.name.endswith('.txt'):
+        elif file_name.endswith('.txt'):
             list_of_names.extend(bbobgi.extract_name_list(file_.read().decode('utf-8')))
     return list_of_names
 
@@ -96,7 +97,7 @@ if files:
     for file_ in files:
         file_name = file_.name
         extension = file_name.split('.')[-1]
-        if file_name.lower() not in ['txt', 'csv', 'xlsx']:
+        if extension.lower() not in ['txt', 'csv', 'xlsx']:
             switch=True
     if switch == True:
         st.sidebar.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
