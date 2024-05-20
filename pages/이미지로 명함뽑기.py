@@ -83,7 +83,7 @@ compare_list=None
 switch = False
 
 if api_button:
-    initial_time = st.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
+    initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
 
     st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
     st.sidebar.write('이 부분은 필수가 아닙니다.')
