@@ -56,9 +56,9 @@ with col1:
     if files:
         switch = True
         
-        for file_ in files:
-            file_name = file_.name
-            if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
+        for file_2 in files:
+            file_name_2 = file_2.name
+            if not (file_name_2.endswith('txt') or file_name_2.endswith('csv') or file_name_2.endswith('xlsx')):
                 switch=False
         if switch == False:
             st.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
