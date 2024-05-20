@@ -139,7 +139,7 @@ else:
     st.sidebar.warning('업로드 대기 중...')
 compare_list = extract_name_list(files)
 
-st.session_state['names'] = dict()
+# st.session_state['names'] = dict()
 col1, col2 = st.columns(2)
 
 with col1:
@@ -190,6 +190,8 @@ with col1:
                                     st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
                                 else: 
                                     st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
+                            else: 
+                                st.session_state['names'] = {extracted_time.split('_')[0] : [user_name]}
 
         if switch_2 == False:
             st.error('업로드 실패!')
