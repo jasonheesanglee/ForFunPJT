@@ -154,7 +154,7 @@ with col1:
     st.header('문서 업로드')
     st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     st.write('이미지 파일들을 선택해주세요!')
-    switch_2 = True
+    switch_2 = {}
 
     files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ', type=['jpg', 'png', 'jpeg'])
     if files_:
@@ -167,23 +167,24 @@ with col1:
             title_date = title_file.split('_')[1]
             
             if extension.lower() not in ['png', 'jpg', 'jpeg']:
-                switch_2=False
-                st.error('png, jpg, jpeg 파일만 지원합니다ㅠㅠ')
+                switch_2[file_name] = False
+                st.error(f'png, jpg, jpeg 파일만 지원합니다ㅠㅠ {file_name}을 수정/제거해주세요')
+
 
             elif re.match(r"^[가-힣]+_", title_file):
-                switch_2=False
-                st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
+                switch_2[file_name] = False
+                st.error(f'파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520 {file_name}를 수정해주세요')
 
             else:
                 try:
                     datetime.strptime(title_date, '%m%d')
                 except ValueError:
-                    switch_2=False
+                    switch_2[file_name] = False
                     st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. 월-일. ex) 홍길동_0520')
 
                 finally:
-                    if openai_api_key:
-                        
+                    if api_switch:
+                        switch_2[file_name] = True
                         content = PIL.Image.open(file_)
                         save_image(file_name=file_name, image=content)
                         img_path = st.session_state['image_storage'][-1]
@@ -192,8 +193,9 @@ with col1:
                             extracted_date = extracted_time.split('_')[0]
                             extracted_time = extracted_time.split('_')[1]
 
-                            if initial_date != extracted_time:
+                            if initial_date != title_date:
                                 st.write(f'{file_name}에서 검출된 날짜: {extracted_date}은/는 날짜가 다릅니다. 유효하지 않습니다.')
+                                
                             elif int(extracted_time) < int(initial_time):
                                 st.write(f'{file_name}에서 검출된 시간: {extracted_time}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
                             else:
@@ -206,10 +208,9 @@ with col1:
                             st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
 
                         
-        if switch_2 == False:
-            st.error('업로드 실패!')
-        else:
-            st.success('업로드 성공!')
+        st.success(f'{switch_2.values().count(True)}개 업로드 성공!')
+        st.error(f'{", ".join([k for k,v in switch_2.items if v==False])} 업로드 실패!')
+        
     else:
         st.warning('업로드 대기 중...')
 
