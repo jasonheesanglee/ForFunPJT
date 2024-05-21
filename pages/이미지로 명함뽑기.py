@@ -205,7 +205,7 @@ with col2:
     if initial_time:
         try:
             target_list = st.session_state['names'][initial_time.split('_')[0]]
-        except ValueError:
+        except KeyError:
             max_date = str(np.max([int(i) for i in st.session_state['names'].keys()]))
             if len(max_date) == 4:
                 str_date = max_date
