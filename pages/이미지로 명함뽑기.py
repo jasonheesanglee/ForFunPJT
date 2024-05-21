@@ -141,6 +141,7 @@ else:
 compare_list = extract_name_list(files)
 
 st.session_state['names'] = {initial_time.split('_')[0]:[]}
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -203,7 +204,7 @@ with col2:
         # st.write(initial_time)
         # st.write(st.session_state)
         try:
-            target_list = st.session_state['names'][initial_time.split('_')[0]]
+            target_list = st.session_state['names'].get(initial_time.split('_')[0])
         except KeyError:
             target_list = []
 
