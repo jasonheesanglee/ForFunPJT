@@ -134,7 +134,7 @@ if initial_time:
     initial_date = initial_time.split('_')[0]
     initial_time = initial_time.split('_')[1]
 
-    if initial_date not in st.session_state['names'].keys():
+    if initial_date not in st.session_state['names']:
         st.session_state['names'][initial_date] = []
     
 st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
@@ -154,8 +154,6 @@ if files:
 else:
     st.sidebar.warning('업로드 대기 중...')
 compare_list = extract_name_list(files)
-
-
 
 
 col1, col2 = st.columns(2)
@@ -198,11 +196,11 @@ if st.session_state['api_switch']:
                             save_image(file_name=file_name, image=content)
                             img_path = st.session_state['image_storage'][-1]
                             user_name, extracted_time = bbobgi.image_extract_time(img_path)
-                            if extracted_time != None:
+                            if extracted_time:
                                 extracted_date = extracted_time.split('_')[0]
                                 extracted_time = extracted_time.split('_')[1]
 
-                                if initial_date != title_date:
+                                if int(initial_date) != int(extracted_date):
                                     st.write(f'{file_name}에서 검출된 날짜: {extracted_date}은/는 날짜가 다릅니다. 유효하지 않습니다.')
                                     
                                 elif int(extracted_time) < int(initial_time):
@@ -213,7 +211,7 @@ if st.session_state['api_switch']:
                                         st.session_state['names'][extracted_date].append(user_name)
                                     else: 
                                         st.session_state['switch_2'][file_name] = True
-                                        st.session_state['names'][extracted_date] = [user_name]
+                                        st.session_state['names'][initial_date] = [user_name]
 
                             else:
                                 st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
