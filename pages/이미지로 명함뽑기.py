@@ -13,8 +13,6 @@ st.set_page_config(
     page_icon='💵'
 )
 
-target_list = None
-extracted_switch = False
 
 st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
@@ -39,6 +37,7 @@ if 'switch_2' not in st.session_state:
 
 if 'names' not in st.session_state:
     st.session_state['names'] = {}
+
 if 'restart' not in st.session_state:
     st.session_state['restart'] = False
 
@@ -134,6 +133,7 @@ def extract_name_list(files):
 ##############################################################################################################
 
 def main():
+    target_list = None
     compare_list=None
     switch = False
 
@@ -251,7 +251,7 @@ def main():
             except ValueError:
                 st.error("Please enter a valid number for the count of names to draw.")
                 n = 0
-                
+
             cont = st.container()
             if target_list and in_button:
                 st.session_state['in_button'] = True
