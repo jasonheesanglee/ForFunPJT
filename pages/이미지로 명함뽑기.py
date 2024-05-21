@@ -26,6 +26,8 @@ st.session_state['api_switch'] = False
 api_button = st.sidebar.button('키 입력 완료')
 if api_button:
     st.session_state['api_switch'] = True
+elif st.session_state['api_switch'] == True:
+    api_button = True
 
 bbobgi = BBobgi(openai_api_key)
 
