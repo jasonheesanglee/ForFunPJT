@@ -141,7 +141,7 @@ else:
     st.sidebar.warning('업로드 대기 중...')
 compare_list = extract_name_list(files)
 
-if 'names' in st.session_state:
+if 'names' in st.session_state and initial_date:
     if initial_date not in st.session_state['names']:
         clear_image_hist()
     
