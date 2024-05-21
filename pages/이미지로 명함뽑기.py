@@ -164,6 +164,10 @@ if st.session_state['api_switch']:
         st.write('이미지 파일들을 선택해주세요!')
         if st.session_state['in_button'] == True:
             st.success('명함뽑기 버튼을 눌러 이미지 업로드는 비활성화 되었습니다!')
+            refresh_image = st.button('업로드된 이미지 초기화')
+            if refresh_image:
+                clear_image_hist()
+                st.session_state['in_button'] = False
         else:
             files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ', type=['jpg', 'png', 'jpeg'])
             if files_:
