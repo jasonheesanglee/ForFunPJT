@@ -208,7 +208,7 @@ with col1:
                             st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
 
                         
-        st.success(f'{switch_2.values().count(True)}개 업로드 성공!')
+        st.success(f'{list(switch_2.values()).count(True)}개 업로드 성공!')
         st.error(f'{", ".join([k for k,v in switch_2.items if v==False])} 업로드 실패!')
         
     else:
