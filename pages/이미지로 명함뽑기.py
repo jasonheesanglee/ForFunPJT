@@ -220,7 +220,7 @@ with col2:
         n = 0
 
     if target_list and in_button:
-        if n!= '' and switch_2:
+        if n != '' and switch_2:
             if not switch:
                 manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
                 choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
@@ -236,3 +236,5 @@ with col2:
                     st.write(', '.join(choose_n))
                 else:
                     st.warning('대상자가 없습니다!')
+    elif target_list == []:
+        st.warning('대상자가 없습니다.')
