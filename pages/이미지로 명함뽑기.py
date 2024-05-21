@@ -139,7 +139,7 @@ else:
     st.sidebar.warning('업로드 대기 중...')
 compare_list = extract_name_list(files)
 
-# st.session_state['names'] = dict()
+st.session_state['names'] = dict()
 col1, col2 = st.columns(2)
 
 with col1:
