@@ -180,7 +180,7 @@ with col1:
                             st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
                         elif extracted_time.split('_')[0] != title.split('_')[-1]:
                             st.write(f'{file_name}에서 검출된 날짜: {extracted_time.split("_")[-1]}은/는 날짜가 다릅니다. 유효하지 않습니다.')
-                        elif int(extracted_time.split('_')[-1]) > int(initial_time.split('_')[-1]):
+                        elif int(extracted_time.split('_')[-1]) < int(initial_time.split('_')[-1]):
                             st.write(f'{file_name}에서 검출된 시간: {extracted_time.split("_")[-1]}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
                         else:
                             if st.session_state['names']:
@@ -202,7 +202,7 @@ with col2:
     st.header('명함을 뽑아볼까요?')
     st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
     if initial_time:
-        target_list = st.session_state['names'][str(initial_time.split('_')[0])]
+        target_list = st.session_state['names'][initial_time.split('_')[0]]
 
     n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
     in_button = st.button('명함 뽑기!')
