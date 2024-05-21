@@ -51,10 +51,6 @@ def df_col_list(file_, df):
     else: 
         return list()
 
-# def save_image_files(image_path):
-
-#     if type_util.is_pillow_image(obj=image_path)
-
 
 def save_image(image:PIL.Image, file_name:str):
     if 'image_storage' not in st.session_state:
@@ -62,6 +58,9 @@ def save_image(image:PIL.Image, file_name:str):
     image.save(file_name)
     st.session_state['image_storage'].append(file_name)
 
+
+def clear_image_hist():
+    st.session_state['image_storage'] = []
 
 def upload_files(accept_multiple_files:bool=False, sidebar:bool=False, add_string:str='', type=None):
     if sidebar:
@@ -139,6 +138,10 @@ else:
     st.sidebar.warning('업로드 대기 중...')
 compare_list = extract_name_list(files)
 
+if 'names' in st.session_state:
+    if initial_time.split('_')[0] not in st.session_state['names']:
+        clear_image_hist()
+    
 st.session_state['names'] = {initial_time.split('_')[0]:[]}
 
 col1, col2 = st.columns(2)
@@ -173,6 +176,7 @@ with col1:
 
                 finally:
                     if openai_api_key:
+                        
                         content = PIL.Image.open(file_)
                         save_image(file_name=file_name, image=content)
                         img_path = st.session_state['image_storage'][-1]
