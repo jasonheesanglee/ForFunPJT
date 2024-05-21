@@ -221,7 +221,7 @@ if st.session_state['api_switch']:
                                 st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
 
                             
-                st.success(f'{list(st.session_state['switch_2'].values()).count(True)}개 업로드 성공!')
+                st.success(f'{list(st.session_state["switch_2"].values()).count(True)}개 업로드 성공!')
                 if False in st.session_state['switch_2'].values():
                     st.error(f'{", ".join([k for k,v in st.session_state['switch_2'].items() if v==False])} 업로드 실패!')
                 
