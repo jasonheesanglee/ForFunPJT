@@ -237,6 +237,8 @@ with col2:
                     st.write(', '.join(choose_n))
                 else:
                     st.warning('대상자가 없습니다!')
+        else:
+            st.write(n, switch_2)
     elif target_list == []:
         st.warning('검출된 대상자가 없습니다.')
     else:
