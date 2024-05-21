@@ -223,7 +223,7 @@ if st.session_state['api_switch']:
                             
                 st.success(f'{list(st.session_state["switch_2"].values()).count(True)}개 업로드 성공!')
                 if False in st.session_state['switch_2'].values():
-                    st.error(f'{", ".join([k for k,v in st.session_state['switch_2'].items() if v==False])} 업로드 실패!')
+                    st.error(f'{", ".join([k for k,v in st.session_state["switch_2"].items() if v==False])} 업로드 실패!')
                 
             else:
                 st.warning('업로드 대기 중...')
