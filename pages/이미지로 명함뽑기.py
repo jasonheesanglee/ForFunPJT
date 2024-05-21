@@ -224,7 +224,7 @@ with col2:
                 if choose_n != []:
                     st.write(', '.join(choose_n))
                 else:
-                    st.warning('대상자가 없습니다!')
+                    st.warning('비교군에 맞는 대상자가 없습니다!')
 
             else:
                 manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
@@ -234,4 +234,4 @@ with col2:
                 else:
                     st.warning('대상자가 없습니다!')
     elif target_list == []:
-        st.warning('대상자가 없습니다.')
+        st.warning('검출된 대상자가 없습니다.')
