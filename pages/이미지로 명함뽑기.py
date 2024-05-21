@@ -203,6 +203,8 @@ with col2:
     st.header('명함을 뽑아볼까요?')
     st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
     if initial_time:
+        st.write(initial_time)
+        st.write(st.session_state)
         try:
             target_list = st.session_state['names'][initial_time.split('_')[0]]
         except KeyError:
