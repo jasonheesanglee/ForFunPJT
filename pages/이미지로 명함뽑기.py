@@ -59,9 +59,8 @@ def df_col_list(file_, df):
 def save_image(image:PIL.Image, file_name:str):
     if 'image_storage' not in st.session_state:
         st.session_state['image_storage'] = []
-    temp_name = f'{file_name}.png'
-    image.save(temp_name)
-    st.session_state['image_storage'].append(temp_name)
+    image.save(file_name)
+    st.session_state['image_storage'].append(file_name)
 
 
 def upload_files(accept_multiple_files:bool=False, sidebar:bool=False, add_string:str='', type=None):
