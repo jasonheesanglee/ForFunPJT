@@ -36,6 +36,9 @@ if 'in_button' not in st.session_state:
 if 'switch_2' not in st.session_state:
     st.session_state['switch_2'] = {}
 
+if 'names' not in st.session_state:
+    st.session_state['names'] = {}
+
 bbobgi = BBobgi(openai_api_key)
 
 ##############################################################################################################
@@ -130,9 +133,8 @@ initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 
 if initial_time:
     initial_date = initial_time.split('_')[0]
     initial_time = initial_time.split('_')[1]
-    if 'names' not in st.session_state:
-        st.session_state['names'] = {}
-    if initial_date not in st.session_state['names']:
+
+    if initial_date not in st.session_state['names'].keys():
         st.session_state['names'][initial_date] = []
     
 st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
@@ -153,12 +155,8 @@ else:
     st.sidebar.warning('업로드 대기 중...')
 compare_list = extract_name_list(files)
 
-if 'names' in st.session_state and initial_time:
-    if initial_date not in st.session_state['names']:
-        clear_image_hist()
 
-if initial_time:
-    st.session_state['names'][initial_date] = st.session_state['names'].get(initial_date, [])
+
 
 col1, col2 = st.columns(2)
 if st.session_state['api_switch']:
@@ -265,6 +263,8 @@ if st.session_state['api_switch']:
                             st.write(', '.join(choose_n))
                         else:
                             st.warning('대상자가 없습니다!')
+                else:
+                    st.warning('날짜, 시간이 제대로 검출된 파일이 없습니다. 본 페이지를 새로고침 해주세요')
             else:
                 st.write(n, st.session_state['in_button'])
 
