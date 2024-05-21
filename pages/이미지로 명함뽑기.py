@@ -203,18 +203,12 @@ with col2:
     st.header('명함을 뽑아볼까요?')
     st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
     if initial_time:
-        st.write(initial_time)
-        st.write(st.session_state)
+        # st.write(initial_time)
+        # st.write(st.session_state)
         try:
             target_list = st.session_state['names'][initial_time.split('_')[0]]
         except KeyError:
-            max_date = str(max([int(i) for i in st.session_state['names'].keys()]))
-            if len(max_date) == 4:
-                str_date = max_date
-            elif len(max_date) == 3:
-                str_date = f'0{max_date}'
-            
-            target_list = st.session_state['names'][str_date]
+            target_list = []
 
 
     n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
