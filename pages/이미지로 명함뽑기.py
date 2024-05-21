@@ -23,10 +23,9 @@ st.sidebar.title('방식 설정')
 openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', type='password', disabled=False)
 api_switch = False
 
-if openai_api_key:
-    api_button = st.sidebar.button('키 입력 완료')
-    if api_button:
-        api_switch = True
+api_button = st.sidebar.button('키 입력 완료')
+if api_button:
+    api_switch = True
 
 bbobgi = BBobgi(openai_api_key)
 
@@ -193,7 +192,7 @@ with col1:
                             extracted_date = extracted_time.split('_')[0]
                             extracted_time = extracted_time.split('_')[1]
 
-                            if initial_time.split('_')[0] != extracted_time:
+                            if initial_date != extracted_time:
                                 st.write(f'{file_name}에서 검출된 날짜: {extracted_date}은/는 날짜가 다릅니다. 유효하지 않습니다.')
                             elif int(extracted_time) < int(initial_time):
                                 st.write(f'{file_name}에서 검출된 시간: {extracted_time}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
