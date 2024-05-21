@@ -194,8 +194,6 @@ if st.session_state['api_switch']:
                             st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. 월-일. ex) 홍길동_0520')
 
                         else:
-                            
-                            st.session_state['switch_2'][file_name] = True
                             content = PIL.Image.open(file_)
                             save_image(file_name=file_name, image=content)
                             img_path = st.session_state['image_storage'][-1]
@@ -211,8 +209,10 @@ if st.session_state['api_switch']:
                                     st.write(f'{file_name}에서 검출된 시간: {extracted_time}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
                                 else:
                                     if extracted_date in st.session_state['names']:
+                                        st.session_state['switch_2'][file_name] = True
                                         st.session_state['names'][extracted_date].append(user_name)
                                     else: 
+                                        st.session_state['switch_2'][file_name] = True
                                         st.session_state['names'][extracted_date] = [user_name]
 
                             else:
@@ -266,7 +266,7 @@ if st.session_state['api_switch']:
                 else:
                     st.warning('날짜, 시간이 제대로 검출된 파일이 없습니다. 본 페이지를 새로고침 해주세요')
             else:
-                st.write(n, st.session_state['in_button'])
+                st.warning('뽑을 명함의 수를 적어주세요!')
 
         elif target_list == []:
             st.warning('검출된 대상자가 없습니다.')
