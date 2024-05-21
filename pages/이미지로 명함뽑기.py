@@ -241,6 +241,8 @@ with col2:
             st.write(n, switch_2)
     elif target_list == []:
         st.warning('검출된 대상자가 없습니다.')
+    elif not in_button:
+        st.error('명함 뽑기! 버튼을 눌러주세요!')
     else:
         st.write(target_list)
         st.write(st.session_state)
