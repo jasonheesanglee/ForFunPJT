@@ -141,11 +141,13 @@ else:
     st.sidebar.warning('업로드 대기 중...')
 compare_list = extract_name_list(files)
 
-if 'names' in st.session_state and initial_date:
+if 'names' in st.session_state and initial_time:
     if initial_date not in st.session_state['names']:
         clear_image_hist()
-    
-st.session_state['names'] = {initial_date:[]}
+if initial_time:
+    st.session_state['names'] = {initial_date:[]}
+else:
+    st.warning('설문조사를 내보낸 날짜를 입력해주세요!')
 
 col1, col2 = st.columns(2)
 
