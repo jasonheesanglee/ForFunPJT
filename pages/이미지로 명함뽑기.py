@@ -180,7 +180,7 @@ with col1:
                             st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
                         elif extracted_time.split('_')[0] != title.split('_')[-1]:
                             st.write(f'{file_name}에서 검출된 날짜: {extracted_time.split("_")[-1]}은/는 날짜가 다릅니다. 유효하지 않습니다.')
-                        elif int(extracted_time.split('_')[-1]) > int(initial_time):
+                        elif int(extracted_time.split('_')[-1]) > int(initial_time.split('_')[-1]):
                             st.write(f'{file_name}에서 검출된 시간: {extracted_time.split("_")[-1]}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
                         else:
                             if st.session_state['names']:
