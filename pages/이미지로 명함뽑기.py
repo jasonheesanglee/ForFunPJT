@@ -209,7 +209,7 @@ with col1:
 
                         
         st.success(f'{list(switch_2.values()).count(True)}개 업로드 성공!')
-        st.error(f'{", ".join([k for k,v in switch_2.items if v==False])} 업로드 실패!')
+        st.error(f'{", ".join([k for k,v in switch_2.items() if v==False])} 업로드 실패!')
         
     else:
         st.warning('업로드 대기 중...')
