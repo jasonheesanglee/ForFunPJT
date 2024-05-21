@@ -143,8 +143,6 @@ compare_list = extract_name_list(files)
 col1, col2 = st.columns(2)
 
 with col1:
-    container_1 = st.container()
-
     st.header('문서 업로드')
     st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
     st.write('이미지 파일들을 선택해주세요!')

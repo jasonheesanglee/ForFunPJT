@@ -82,25 +82,24 @@ else:
 exclude_button = st.sidebar.button(exclude_yes_no)
 col1, col2 = st.columns(2)
 with col1:
-    if exclude_button:
-        st.header('문서 업로드')
-        st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
-        
+    st.header('문서 업로드')
+    st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
+    
 
-        files_ = upload_files(accept_multiple_files=True, sidebar=False)
-        if files_:
-            switch_2 = True
-            for file_ in files_:
-                file_name = file_.name
-                if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
-                    switch_2=False
-            if switch_2 == False:
-                st.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
-            else:
-                st.success('업로드 성공!')
+    files_ = upload_files(accept_multiple_files=True, sidebar=False)
+    if files_:
+        switch_2 = True
+        for file_ in files_:
+            file_name = file_.name
+            if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
+                switch_2=False
+        if switch_2 == False:
+            st.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
         else:
-            st.warning('업로드 대기 중...')
-        target_list = extract_name_list(files_)
+            st.success('업로드 성공!')
+    else:
+        st.warning('업로드 대기 중...')
+    target_list = extract_name_list(files_)
 
 with col2:
     if target_list:
