@@ -30,6 +30,9 @@ if api_button:
 elif st.session_state['api_switch'] == True:
     api_button = True
 
+if 'in_button' not in st.session_state:
+    st.session_state['in_button'] = False
+
 bbobgi = BBobgi(openai_api_key)
 
 ##############################################################################################################
@@ -160,65 +163,68 @@ if st.session_state['api_switch']:
         st.header('문서 업로드')
         st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
         st.write('이미지 파일들을 선택해주세요!')
-        switch_2 = {}
+        if st.session_state['in_button'] == True:
+            st.success('명함뽑기 버튼을 눌러 이미지 업로드는 비활성화 되었습니다!')
+        else:
+            switch_2 = {}
+            files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ', type=['jpg', 'png', 'jpeg'])
+            if files_:
+                for idx, file_ in enumerate(files_):
+                    file_name = file_.name
+                    extension = file_name.split('.')[-1]
+                    title_file = file_name.split('.')[0]
 
-        files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ', type=['jpg', 'png', 'jpeg'])
-        if files_:
-            for idx, file_ in enumerate(files_):
-                file_name = file_.name
-                extension = file_name.split('.')[-1]
-                title_file = file_name.split('.')[0]
-
-                title_user = title_file.split('_')[0]
-                title_date = title_file.split('_')[1]
-                
-                if extension.lower() not in ['png', 'jpg', 'jpeg']:
-                    switch_2[file_name] = False
-                    st.error(f'png, jpg, jpeg 파일만 지원합니다ㅠㅠ {file_name}을 수정/제거해주세요')
-
-
-                elif re.match(r"^[가-힣]+_", title_file):
-                    switch_2[file_name] = False
-                    st.error(f'파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520, {file_name}를 수정해주세요')
-
-                else:
-                    try:
-                        datetime.strptime(title_date, '%m%d')
-                    except ValueError:
+                    title_user = title_file.split('_')[0]
+                    title_date = title_file.split('_')[1]
+                    
+                    if extension.lower() not in ['png', 'jpg', 'jpeg']:
                         switch_2[file_name] = False
-                        st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. 월-일. ex) 홍길동_0520')
+                        st.error(f'png, jpg, jpeg 파일만 지원합니다ㅠㅠ {file_name}을 수정/제거해주세요')
+
+
+                    elif re.match(r"^[가-힣]+_", title_file):
+                        switch_2[file_name] = False
+                        st.error(f'파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520, {file_name}를 수정해주세요')
 
                     else:
-                        switch_2[file_name] = True
-                        content = PIL.Image.open(file_)
-                        save_image(file_name=file_name, image=content)
-                        img_path = st.session_state['image_storage'][-1]
-                        user_name, extracted_time = bbobgi.image_extract_time(img_path)
-                        if extracted_time != None:
-                            extracted_date = extracted_time.split('_')[0]
-                            extracted_time = extracted_time.split('_')[1]
-
-                            if initial_date != title_date:
-                                st.write(f'{file_name}에서 검출된 날짜: {extracted_date}은/는 날짜가 다릅니다. 유효하지 않습니다.')
-                                
-                            elif int(extracted_time) < int(initial_time):
-                                st.write(f'{file_name}에서 검출된 시간: {extracted_time}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
-                            else:
-                                if extracted_date in st.session_state['names']:
-                                    st.session_state['names'][extracted_date].append(user_name)
-                                else: 
-                                    st.session_state['names'][extracted_date] = [user_name]
+                        try:
+                            datetime.strptime(title_date, '%m%d')
+                        except ValueError:
+                            switch_2[file_name] = False
+                            st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. 월-일. ex) 홍길동_0520')
 
                         else:
-                            st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
+                            
+                            switch_2[file_name] = True
+                            content = PIL.Image.open(file_)
+                            save_image(file_name=file_name, image=content)
+                            img_path = st.session_state['image_storage'][-1]
+                            user_name, extracted_time = bbobgi.image_extract_time(img_path)
+                            if extracted_time != None:
+                                extracted_date = extracted_time.split('_')[0]
+                                extracted_time = extracted_time.split('_')[1]
+
+                                if initial_date != title_date:
+                                    st.write(f'{file_name}에서 검출된 날짜: {extracted_date}은/는 날짜가 다릅니다. 유효하지 않습니다.')
+                                    
+                                elif int(extracted_time) < int(initial_time):
+                                    st.write(f'{file_name}에서 검출된 시간: {extracted_time}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
+                                else:
+                                    if extracted_date in st.session_state['names']:
+                                        st.session_state['names'][extracted_date].append(user_name)
+                                    else: 
+                                        st.session_state['names'][extracted_date] = [user_name]
+
+                            else:
+                                st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
 
                             
-            st.success(f'{list(switch_2.values()).count(True)}개 업로드 성공!')
-            if False in switch_2.values():
-                st.error(f'{", ".join([k for k,v in switch_2.items() if v==False])} 업로드 실패!')
-            
-        else:
-            st.warning('업로드 대기 중...')
+                st.success(f'{list(switch_2.values()).count(True)}개 업로드 성공!')
+                if False in switch_2.values():
+                    st.error(f'{", ".join([k for k,v in switch_2.items() if v==False])} 업로드 실패!')
+                
+            else:
+                st.warning('업로드 대기 중...')
 
     with col2:
         st.header('명함을 뽑아볼까요?')
@@ -239,6 +245,7 @@ if st.session_state['api_switch']:
             n = 0
 
         if target_list and in_button:
+            st.session_state['in_button'] = True
             if n != '' and switch_2:
                 if not switch:
                     manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
@@ -257,7 +264,7 @@ if st.session_state['api_switch']:
                         st.warning('대상자가 없습니다!')
             else:
                 st.write(n, switch_2)
-                
+
         elif target_list == []:
             st.warning('검출된 대상자가 없습니다.')
         elif not in_button:
