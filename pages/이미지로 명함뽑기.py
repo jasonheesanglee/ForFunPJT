@@ -21,7 +21,8 @@ st.title('이미지로 명함뽑기!')
 st.sidebar.title('방식 설정')
 
 openai_api_key = st.sidebar.text_input(label='OpenAI API Key를 입력해주세요.', type='password', disabled=False)
-st.session_state['api_switch'] = False
+if 'api_switch' not in st.session_state:
+    st.session_state['api_switch'] = False
 
 api_button = st.sidebar.button('키 입력 완료')
 if api_button:
