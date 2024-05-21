@@ -1,6 +1,6 @@
 import os
 import re
-import numpy as np
+
 from datetime import datetime
 import pandas as pd
 import streamlit as st
@@ -206,7 +206,7 @@ with col2:
         try:
             target_list = st.session_state['names'][initial_time.split('_')[0]]
         except KeyError:
-            max_date = str([int(i) for i in st.session_state['names'].keys()].max())
+            max_date = str(max([int(i) for i in st.session_state['names'].keys()]))
             if len(max_date) == 4:
                 str_date = max_date
             elif len(max_date) == 3:
