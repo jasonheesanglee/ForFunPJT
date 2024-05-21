@@ -118,7 +118,10 @@ def extract_name_list(files):
 compare_list=None
 switch = False
 
-initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 시간', placeholder='%m%d_%H%M의 형식으로, 예시: 0525_1530')
+initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 시간, %m%d_%H%M의 형식으로', placeholder='예시: 0525_1530')
+if initial_time != '':
+    initial_date = initial_time.split('_')[0]
+    initial_time = initial_time.split('_')[1]
 
 st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
 st.sidebar.write('이 부분은 필수가 아닙니다.')
@@ -139,10 +142,10 @@ else:
 compare_list = extract_name_list(files)
 
 if 'names' in st.session_state:
-    if initial_time.split('_')[0] not in st.session_state['names']:
+    if initial_date not in st.session_state['names']:
         clear_image_hist()
     
-st.session_state['names'] = {initial_time.split('_')[0]:[]}
+st.session_state['names'] = {initial_date:[]}
 
 col1, col2 = st.columns(2)
 
@@ -157,19 +160,22 @@ with col1:
         for idx, file_ in enumerate(files_):
             file_name = file_.name
             extension = file_name.split('.')[-1]
-            title = file_name.split('.')[0]
+            title_file = file_name.split('.')[0]
+
+            title_user = title_file.split('_')[0]
+            title_date = title_file.split('_')[1]
             
             if extension.lower() not in ['png', 'jpg', 'jpeg']:
                 switch_2=False
                 st.error('png, jpg, jpeg 파일만 지원합니다ㅠㅠ')
 
-            elif re.match(r"^[가-힣]+_", title):
+            elif re.match(r"^[가-힣]+_", title_file):
                 switch_2=False
                 st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520')
 
             else:
                 try:
-                    datetime.strptime(title.split('_')[1], '%m%d')
+                    datetime.strptime(title_date, '%m%d')
                 except ValueError:
                     switch_2=False
                     st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. 월-일. ex) 홍길동_0520')
@@ -181,18 +187,24 @@ with col1:
                         save_image(file_name=file_name, image=content)
                         img_path = st.session_state['image_storage'][-1]
                         user_name, extracted_time = bbobgi.image_extract_time(img_path)
-                        if extracted_time == None:
-                            st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
-                        elif extracted_time.split('_')[0] != title.split('_')[-1]:
-                            st.write(f'{file_name}에서 검출된 날짜: {extracted_time.split("_")[-1]}은/는 날짜가 다릅니다. 유효하지 않습니다.')
-                        elif int(extracted_time.split('_')[-1]) < int(initial_time.split('_')[-1]):
-                            st.write(f'{file_name}에서 검출된 시간: {extracted_time.split("_")[-1]}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
-                        else:
-                            if extracted_time.split('_')[0] in st.session_state['names']:
-                                st.session_state['names'][extracted_time.split('_')[0]].append(user_name)
-                            else: 
-                                st.session_state['names'][extracted_time.split('_')[0]] = [user_name]
+                        if extracted_time != None:
+                            extracted_date = extracted_time.split('_')[0]
+                            extracted_time = extracted_time.split('_')[1]
 
+                            if initial_time.split('_')[0] != extracted_time:
+                                st.write(f'{file_name}에서 검출된 날짜: {extracted_date}은/는 날짜가 다릅니다. 유효하지 않습니다.')
+                            elif int(extracted_time) < int(initial_time):
+                                st.write(f'{file_name}에서 검출된 시간: {extracted_time}은/는 설문조사 시작 시간보다 이른 시간입니다. 유효하지 않습니다.')
+                            else:
+                                if extracted_date in st.session_state['names']:
+                                    st.session_state['names'][extracted_date].append(user_name)
+                                else: 
+                                    st.session_state['names'][extracted_date] = [user_name]
+
+                        else:
+                            st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
+
+                        
         if switch_2 == False:
             st.error('업로드 실패!')
         else:
@@ -203,11 +215,9 @@ with col1:
 with col2:
     st.header('명함을 뽑아볼까요?')
     st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
-    if initial_time:
-        # st.write(initial_time)
-        # st.write(st.session_state)
+    if initial_time != '':
         try:
-            target_list = st.session_state['names'].get(initial_time.split('_')[0])
+            target_list = st.session_state['names'][initial_date]
         except KeyError:
             target_list = []
 
