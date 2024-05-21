@@ -236,3 +236,6 @@ with col2:
                     st.warning('대상자가 없습니다!')
     elif target_list == []:
         st.warning('검출된 대상자가 없습니다.')
+    else:
+        st.write(target_list)
+        st.write(st.session_state)
