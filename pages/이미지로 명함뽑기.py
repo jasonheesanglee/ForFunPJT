@@ -224,9 +224,15 @@ with col2:
             if not switch:
                 manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
                 choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                st.write(', '.join(choose_n))
+                if choose_n != []:
+                    st.write(', '.join(choose_n))
+                else:
+                    st.warning('대상자가 없습니다!')
 
             else:
                 manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
                 choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                st.write(', '.join(choose_n))
+                if choose_n != []:
+                    st.write(', '.join(choose_n))
+                else:
+                    st.warning('대상자가 없습니다!')
