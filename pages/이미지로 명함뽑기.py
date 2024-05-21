@@ -237,13 +237,12 @@ def main():
 
         with col2:
             st.header('명함을 뽑아볼까요?')
-            st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
+            st.write('왼쪽 업로드를 마치고 여기를 봐주세요!')
             if initial_time:
                 try:
                     target_list = st.session_state['names'][initial_date]
                 except KeyError:
                     target_list = []
-
 
             n_input = st.text_input('뽑을 명함의 수를 숫자로 적어주세요.', placeholder='1')
             in_button = st.button('명함 뽑기!')
@@ -252,7 +251,8 @@ def main():
             except ValueError:
                 st.error("Please enter a valid number for the count of names to draw.")
                 n = 0
-            cont = st.container(height=300)
+                
+            cont = st.container()
             if target_list and in_button:
                 st.session_state['in_button'] = True
                 if n != '':
@@ -264,7 +264,6 @@ def main():
                                 cont.write(', '.join(choose_n))
                             else:
                                 cont.warning('비교군에 맞는 대상자가 없습니다!')
-
                         else:
                             manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
                             choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
@@ -286,6 +285,8 @@ def main():
                 cont.write(st.session_state)
 
 if __name__ == '__main__':
-    
+    if st.session_state['restart']:
+        st.session_state['restart'] = False
+        st.experimental_rerun()
     main()
     
