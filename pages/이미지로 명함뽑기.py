@@ -34,7 +34,7 @@ if 'in_button' not in st.session_state:
     st.session_state['in_button'] = False
 
 if 'switch_2' not in st.session_state:
-    st.sessio_state['switch_2'] = {}
+    st.session_state['switch_2'] = {}
 
 bbobgi = BBobgi(openai_api_key)
 
@@ -169,7 +169,6 @@ if st.session_state['api_switch']:
         if st.session_state['in_button'] == True:
             st.success('명함뽑기 버튼을 눌러 이미지 업로드는 비활성화 되었습니다!')
         else:
-            st.sessio_state['switch_2'] = {}
             files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ', type=['jpg', 'png', 'jpeg'])
             if files_:
                 for idx, file_ in enumerate(files_):
@@ -181,24 +180,24 @@ if st.session_state['api_switch']:
                     title_date = title_file.split('_')[1]
                     
                     if extension.lower() not in ['png', 'jpg', 'jpeg']:
-                        st.sessio_state['switch_2'][file_name] = False
+                        st.session_state['switch_2'][file_name] = False
                         st.error(f'png, jpg, jpeg 파일만 지원합니다ㅠㅠ {file_name}을 수정/제거해주세요')
 
 
                     elif re.match(r"^[가-힣]+_", title_file):
-                        st.sessio_state['switch_2'][file_name] = False
+                        st.session_state['switch_2'][file_name] = False
                         st.error(f'파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520, {file_name}를 수정해주세요')
 
                     else:
                         try:
                             datetime.strptime(title_date, '%m%d')
                         except ValueError:
-                            st.sessio_state['switch_2'][file_name] = False
+                            st.session_state['switch_2'][file_name] = False
                             st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. 월-일. ex) 홍길동_0520')
 
                         else:
                             
-                            st.sessio_state['switch_2'][file_name] = True
+                            st.session_state['switch_2'][file_name] = True
                             content = PIL.Image.open(file_)
                             save_image(file_name=file_name, image=content)
                             img_path = st.session_state['image_storage'][-1]
@@ -222,9 +221,9 @@ if st.session_state['api_switch']:
                                 st.write(f'{file_name}에서 날짜와 시간이 확인되지 않습니다. 유효하지 않습니다.')
 
                             
-                st.success(f'{list(st.sessio_state['switch_2'].values()).count(True)}개 업로드 성공!')
-                if False in st.sessio_state['switch_2'].values():
-                    st.error(f'{", ".join([k for k,v in st.sessio_state['switch_2'].items() if v==False])} 업로드 실패!')
+                st.success(f'{list(st.session_state['switch_2'].values()).count(True)}개 업로드 성공!')
+                if False in st.session_state['switch_2'].values():
+                    st.error(f'{", ".join([k for k,v in st.session_state['switch_2'].items() if v==False])} 업로드 실패!')
                 
             else:
                 st.warning('업로드 대기 중...')
@@ -250,7 +249,7 @@ if st.session_state['api_switch']:
         if target_list and in_button:
             st.session_state['in_button'] = True
             if n != '':
-                if True in st.sessio_state['switch_2'].values():
+                if True in st.session_state['switch_2'].values():
                     if not switch:
                         manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
                         choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
