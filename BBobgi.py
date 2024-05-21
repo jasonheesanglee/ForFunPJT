@@ -108,6 +108,7 @@ class BBobgi:
         final_lists = []
         count = 0
         if BBobgi_tong != []:
+            st.write(BBobgi_tong)
             while count != n or n == len(BBobgi_tong):
                 final = random.choice(BBobgi_tong)
                 if final_lists!=[] and final in final_lists:
