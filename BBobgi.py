@@ -107,14 +107,15 @@ class BBobgi:
         random.shuffle(BBobgi_tong)
         final_lists = []
         count = 0
-
-        while count != n:
-            final = random.choice(BBobgi_tong)
-            if final_lists!=[] and final in final_lists:
-                continue
-            else:
-                final_lists.append(final)
-                count += 1
+        if BBobgi_tong != []:
+            while count != n:
+                
+                final = random.choice(BBobgi_tong)
+                if final_lists!=[] and final in final_lists:
+                    continue
+                else:
+                    final_lists.append(final)
+                    count += 1
         return final_lists
 
     
