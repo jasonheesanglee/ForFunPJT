@@ -243,7 +243,7 @@ if st.session_state['api_switch']:
         except ValueError:
             st.error("Please enter a valid number for the count of names to draw.")
             n = 0
-
+        cont = st.container(height=300)
         if target_list and in_button:
             st.session_state['in_button'] = True
             if n != '':
@@ -252,26 +252,26 @@ if st.session_state['api_switch']:
                         manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
                         choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
                         if choose_n:
-                            st.write(', '.join(choose_n))
+                            cont.write(', '.join(choose_n))
                         else:
-                            st.warning('비교군에 맞는 대상자가 없습니다!')
+                            cont.warning('비교군에 맞는 대상자가 없습니다!')
 
                     else:
                         manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
                         choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
                         if choose_n != []:
-                            st.write(', '.join(choose_n))
+                            cont.write(', '.join(choose_n))
                         else:
-                            st.warning('대상자가 없습니다!')
+                            cont.warning('대상자가 없습니다!')
                 else:
-                    st.warning('날짜, 시간이 제대로 검출된 파일이 없습니다. 본 페이지를 새로고침 해주세요')
+                    cont.warning('날짜, 시간이 제대로 검출된 파일이 없습니다. 본 페이지를 새로고침 해주세요')
             else:
-                st.warning('뽑을 명함의 수를 적어주세요!')
+                cont.warning('뽑을 명함의 수를 적어주세요!')
 
         elif target_list == []:
-            st.warning('검출된 대상자가 없습니다.')
+            cont.warning('검출된 대상자가 없습니다.')
         elif not in_button:
-            st.error('명함 뽑기! 버튼을 눌러주세요!')
+            cont.error('명함 뽑기! 버튼을 눌러주세요!')
         else:
-            st.write(target_list)
-            st.write(st.session_state)
+            cont.write(target_list)
+            cont.write(st.session_state)
