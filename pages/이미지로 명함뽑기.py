@@ -121,10 +121,14 @@ compare_list=None
 switch = False
 
 initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 시간, %m%d_%H%M의 형식으로', placeholder='예시: 0525_1530')
-if initial_time != '':
+if initial_time:
     initial_date = initial_time.split('_')[0]
     initial_time = initial_time.split('_')[1]
-
+    if 'names' not in st.session_state:
+        st.session_state['names'] = {}
+    if initial_date not in st.session_state['names']:
+        st.session_state['names'][initial_date] = []
+    
 st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
 st.sidebar.write('이 부분은 필수가 아닙니다.')
 files = upload_files(accept_multiple_files=True, sidebar=True, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
@@ -146,13 +150,12 @@ compare_list = extract_name_list(files)
 if 'names' in st.session_state and initial_time:
     if initial_date not in st.session_state['names']:
         clear_image_hist()
+
 if initial_time:
-    st.session_state['names'] = {initial_date:[]}
-else:
-    st.warning('설문조사를 내보낸 날짜를 입력해주세요!')
+    st.session_state['names'][initial_date] = st.session_state['names'].get(initial_date, [])
 
 col1, col2 = st.columns(2)
-if st.session_state['api_switch'] == True:
+if st.session_state['api_switch']:
     with col1:
         st.header('문서 업로드')
         st.write('이름이 많으면 많을수록 뽑힐 확률이 늘어납니다!')
@@ -176,7 +179,7 @@ if st.session_state['api_switch'] == True:
 
                 elif re.match(r"^[가-힣]+_", title_file):
                     switch_2[file_name] = False
-                    st.error(f'파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520 {file_name}를 수정해주세요')
+                    st.error(f'파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520, {file_name}를 수정해주세요')
 
                 else:
                     try:
@@ -185,7 +188,7 @@ if st.session_state['api_switch'] == True:
                         switch_2[file_name] = False
                         st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. 월-일. ex) 홍길동_0520')
 
-                    finally:
+                    else:
                         switch_2[file_name] = True
                         content = PIL.Image.open(file_)
                         save_image(file_name=file_name, image=content)
@@ -220,7 +223,7 @@ if st.session_state['api_switch'] == True:
     with col2:
         st.header('명함을 뽑아볼까요?')
         st.write('왼쪽 업로드를 마치고 여기를 봐주세요!',)
-        if initial_time != '':
+        if initial_time:
             try:
                 target_list = st.session_state['names'][initial_date]
             except KeyError:
@@ -240,7 +243,7 @@ if st.session_state['api_switch'] == True:
                 if not switch:
                     manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
                     choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                    if choose_n != []:
+                    if choose_n:
                         st.write(', '.join(choose_n))
                     else:
                         st.warning('비교군에 맞는 대상자가 없습니다!')
@@ -254,6 +257,7 @@ if st.session_state['api_switch'] == True:
                         st.warning('대상자가 없습니다!')
             else:
                 st.write(n, switch_2)
+                
         elif target_list == []:
             st.warning('검출된 대상자가 없습니다.')
         elif not in_button:
