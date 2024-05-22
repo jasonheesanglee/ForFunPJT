@@ -134,7 +134,7 @@ def extract_name_list(files):
 
 def main():
     target_list = None
-    compare_list=None
+    compare_list = None
     switch = False
 
     initial_time = st.sidebar.text_input(label='설문조사를 내보낸 날짜와 시간, %m%d_%H%M의 형식으로', placeholder='예시: 0525_1530')
