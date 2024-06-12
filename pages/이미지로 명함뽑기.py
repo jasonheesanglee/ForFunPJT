@@ -5,6 +5,7 @@ from datetime import datetime
 import pandas as pd
 import streamlit as st
 import PIL
+from PIL import Image
 from BBobgi import BBobgi
 # from streamlit import type_util
 
@@ -64,7 +65,7 @@ def df_col_list(file_, df):
         return list()
 
 
-def save_image(image:PIL.Image, file_name:str):
+def save_image(image:Image, file_name:str):
     if 'image_storage' not in st.session_state:
         st.session_state['image_storage'] = []
     image.save(file_name)
@@ -204,7 +205,7 @@ def main():
                                 st.error('파일명은 "성함_월일" 양식과 동일해야 합니다. 월-일. ex) 홍길동_0520')
 
                             else:
-                                content = PIL.Image.open(file_)
+                                content = Image.open(file_)
                                 save_image(file_name=file_name, image=content)
                                 img_path = st.session_state['image_storage'][-1]
                                 _, extracted_time = bbobgi.image_extract_time(img_path)
