@@ -146,25 +146,6 @@ def main():
         if initial_date not in st.session_state['names']:
             st.session_state['names'][initial_date] = []
         
-    st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.')
-    st.sidebar.write('이 부분은 필수가 아닙니다.')
-    files = upload_files(accept_multiple_files=True, sidebar=True, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
-    if files:
-        for file_ in files:
-            file_name = file_.name
-            extension = file_name.split('.')[-1]
-            if extension.lower() not in ['txt', 'csv', 'xlsx']:
-                switch=True
-        if switch == True:
-            st.sidebar.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
-        else:
-            st.sidebar.success('업로드 성공!')
-
-    else:
-        st.sidebar.warning('업로드 대기 중...')
-    compare_list = extract_name_list(files)
-
-
     col1, col2 = st.columns(2)
     if st.session_state['api_switch']:
         with col1:
@@ -258,20 +239,12 @@ def main():
                 st.session_state['in_button'] = True
                 if n != '':
                     if True in st.session_state['switch_2'].values():
-                        if not switch:
-                            manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
-                            choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                            if choose_n:
-                                cont.write(', '.join(choose_n))
-                            else:
-                                cont.warning('비교군에 맞는 대상자가 없습니다!')
+                        manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
+                        choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+                        if choose_n != []:
+                            cont.write(', '.join(choose_n))
                         else:
-                            manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
-                            choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
-                            if choose_n != []:
-                                cont.write(', '.join(choose_n))
-                            else:
-                                cont.warning('대상자가 없습니다!')
+                            cont.warning('대상자가 없습니다!')
                     else:
                         cont.warning('날짜, 시간이 제대로 검출된 파일이 없습니다. 본 페이지를 새로고침 해주세요')
                 else:
