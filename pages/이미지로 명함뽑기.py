@@ -177,23 +177,22 @@ def main():
                 if refresh_image:
                     clear_hist()
             else:
-                clear_hist()
                 files_ = upload_files(accept_multiple_files=True, sidebar=False, add_string='png, jpg, jpeg ', type=['jpg', 'png', 'jpeg'])
                 if files_:
                     for file_ in files_:
                         file_name = file_.name
                         extension = file_name.split('.')[-1]
                         title_file = file_name.split('.')[0]
-                        try:
-                            title_user = title_file.split('_')[0]
-                            title_date = title_file.split('_')[1]
+
+                        title_user = title_file.split('_')[0]
+                        title_date = title_file.split('_')[1]
                         
-                        except extension.lower() not in ['png', 'jpg', 'jpeg']:
+                        if extension.lower() not in ['png', 'jpg', 'jpeg']:
                             st.session_state['switch_2'][file_name] = False
                             st.error(f'png, jpg, jpeg 파일만 지원합니다ㅠㅠ {file_name}을 수정/제거해주세요')
 
 
-                        except re.match(r"^[가-힣]+_", title_file):
+                        elif re.match(r"^[가-힣]+_", title_file):
                             st.session_state['switch_2'][file_name] = False
                             st.error(f'파일명은 "성함_월일" 양식과 동일해야 합니다. ex) 홍길동_0520, {file_name}를 수정해주세요')
 
