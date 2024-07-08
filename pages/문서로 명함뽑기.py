@@ -51,7 +51,35 @@ def extract_name_list(files):
             list_of_names.extend(bbobgi.extract_name_list(file_.read().decode('utf-8')))
     return list_of_names
 
-#################################################################################################
+
+
+# st.sidebar.title('방식 설정')
+# st.sidebar.write('현재 CSV, XLSX, TXT 파일만 지원합니다.',)
+# st.sidebar.write(' ')
+# st.sidebar.write('이 부분은 필수가 아닙니다.',)
+# files = upload_files(accept_multiple_files=True, sidebar=True, add_string='외부인원을 제외하려면 내부인원만 나열된 ')
+# if files:
+#     switch = True
+#     for file_ in files:
+#         file_name = file_.name
+#         if not (file_name.endswith('txt') or file_name.endswith('csv') or file_name.endswith('xlsx')):
+#             switch=False
+#     if switch == False:
+#         st.sidebar.error('업로드 실패! csv, xlsx, txt 파일만 지원합니다ㅠㅠ')
+#     else:
+#         st.sidebar.success('업로드 성공!')
+
+# else:
+#     st.sidebar.warning('업로드 대기 중...')
+
+# compare_list = extract_name_list(files)
+# if compare_list == list():
+#     exclude_yes_no = '제외 안함'
+
+# else:
+#     exclude_yes_no = '완료'
+    
+# exclude_button = st.sidebar.button(exclude_yes_no)
 
 col1, col2 = st.columns(2)
 with col1:
@@ -88,7 +116,10 @@ with col2:
             n = 0
 
         cont = st.container(height=300, border=True)
-
+        # if n!= '' and in_button:
+        #     manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list, compare_list)
+        #     choose_n = bbobgi.choose_n_students(manjokdo_dict=manjokdo_done, n=n)
+        #     cont.write(', '.join(choose_n))
 
         if n!= '' and in_button:
             manjokdo_done = bbobgi.count_manjokdo_complete_per_student(target_list)
